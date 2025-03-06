@@ -19,4 +19,9 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LealVault.Common\LealVault.Common.csproj" />
+    <ProjectReference Include="..\LealVault.Resources\LealVault.Resources.csproj" />
+  </ItemGroup>
 </Project>
