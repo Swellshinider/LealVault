@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LealVault", "LealVault\LealVault.csproj", "{FECEDB0D-764D-4AE7-BDBA-ED61F58409FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LealVault.Installer", "LealVault.Installer\LealVault.Installer.csproj", "{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LealVault.Common", "LealVault.Common\LealVault.Common.csproj", "{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LealVault.Resources", "LealVault.Resources\LealVault.Resources.csproj", "{9C3DB95C-357F-4753-A74A-0AD3711A3212}"
@@ -33,18 +31,6 @@ Global
 		{FECEDB0D-764D-4AE7-BDBA-ED61F58409FE}.Release|x64.Build.0 = Release|Any CPU
 		{FECEDB0D-764D-4AE7-BDBA-ED61F58409FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{FECEDB0D-764D-4AE7-BDBA-ED61F58409FE}.Release|x86.Build.0 = Release|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Debug|x64.Build.0 = Debug|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Debug|x86.Build.0 = Debug|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Release|x64.ActiveCfg = Release|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Release|x64.Build.0 = Release|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Release|x86.ActiveCfg = Release|Any CPU
-		{0D3C4AA7-7367-46B6-8E87-FDB99928BBC8}.Release|x86.Build.0 = Release|Any CPU
 		{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}.Debug|x64.ActiveCfg = Debug|Any CPU

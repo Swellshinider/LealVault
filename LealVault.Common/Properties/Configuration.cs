@@ -7,6 +7,8 @@ public static class Configuration
 {
     private static string? _baseDirectory = null;
 
+    internal static bool DatabaseCreated { get; set; } = false;
+
     /// <summary>
     /// Gets the base directory for storing configuration files.
     /// </summary>

@@ -1,14 +1,10 @@
 ﻿using LealVault.Common.Properties;
 using Microsoft.Data.Sqlite;
 
-namespace LealVault.Common.Database.Access
+namespace LealVault.Common.Database
 {
     internal sealed class DatabaseContext : IDisposable
     {
-        internal const string USER_TABLE = "User";
-        internal const string REGISTER_TABLE = "Register";
-        internal const string CREDITCARD_TABLE = "CreditCard";
-
         private bool disposedValue = false;
         private readonly SqliteConnection _connection;
 
@@ -21,26 +17,30 @@ namespace LealVault.Common.Database.Access
 
             _connection = new($"Data Source={filePath}");
             _connection.Open();
+            Initialize();
         }
 
         internal SqliteCommand GetCommand() => _connection.CreateCommand();
 
-        internal void Initialize()
+        private void Initialize()
         {
+            if (!Configuration.DatabaseCreated)
+                return;
+
             using var command = GetCommand();
 
             // Create tables
             command.CommandText = $@"
-                CREATE TABLE IF NOT EXISTS {USER_TABLE} (
-                    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                CREATE TABLE IF NOT EXISTS User (
+                    user_id TEXT PRIMARY KEY,
                     username TEXT UNIQUE NOT NULL,
                     password BLOB NOT NULL,
                     salt BLOB NOT NULL
                 );
 
-                CREATE TABLE IF NOT EXISTS {REGISTER_TABLE} (
-                    register_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id INTEGER NOT NULL,
+                CREATE TABLE IF NOT EXISTS Register (
+                    register_id TEXT PRIMARY KEY,
+                    user_id TEXT NOT NULL,
                     name TEXT NOT NULL,
                     email TEXT,
                     password TEXT NOT NULL,
@@ -48,9 +48,9 @@ namespace LealVault.Common.Database.Access
                     FOREIGN KEY (user_id) REFERENCES users(user_id)
                 );
 
-                CREATE TABLE IF NOT EXISTS {CREDITCARD_TABLE} (
-                    card_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id INTEGER NOT NULL,
+                CREATE TABLE IF NOT EXISTS CreditCard (
+                    card_id TEXT PRIMARY KEY,
+                    user_id TEXT NOT NULL,
                     card_number TEXT NOT NULL,
                     expiration_date TEXT NOT NULL, -- MM/YYYY
                     cvv TEXT NOT NULL,
@@ -61,6 +61,7 @@ namespace LealVault.Common.Database.Access
             ";
 
             command.ExecuteNonQuery();
+            Configuration.DatabaseCreated = true;
         }
 
         #region [ Dispose ]
