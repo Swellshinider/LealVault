@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="LealVault.View.MainWindow"
+        Title="LealVault">
+	<Grid ColumnDefinitions="Auto, *">
+		<StackPanel Grid.Column="0" Background="#f0f0f0" Name="LeftPanel">
+			<Grid ColumnDefinitions="*,Auto">
+				<TextBlock
+					Grid.Column="0" 
+					Text="LealVault" 
+					Margin="10" 
+					VerticalAlignment="Center" 
+					FontWeight="Bold" />
+				<Button 
+					Grid.Column="1" 
+					Name="CollapseButton" 
+					Content="&lt;" 
+					Margin="5" 
+					Click="CollapseButton_Click" />
+			</Grid>
+
+			<Button Name="DashboardButton" Content="Dashboard" Margin="5" />
+			<Button Name="RegistersButton" Content="Registers" Margin="5" />
+			<Button Name="CardsButton" Content="Cards" Margin="5" />
+			<Button Name="ConfigurationButton" Content="Configuration" Margin="5" />
+		</StackPanel>
+
+		<ContentControl Grid.Column="1" Name="ContentContainer" />
+	</Grid>
+</Window>
