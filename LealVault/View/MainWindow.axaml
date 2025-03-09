@@ -6,26 +6,44 @@
         x:Class="LealVault.View.MainWindow"
         Title="LealVault">
 	<Grid ColumnDefinitions="Auto, *">
-		<StackPanel Grid.Column="0" Background="#f0f0f0" Name="LeftPanel">
-			<Grid ColumnDefinitions="*,Auto">
-				<TextBlock
-					Grid.Column="0" 
-					Text="LealVault" 
-					Margin="10" 
-					VerticalAlignment="Center" 
-					FontWeight="Bold" />
-				<Button 
-					Grid.Column="1" 
-					Name="CollapseButton" 
-					Content="&lt;" 
-					Margin="5" 
-					Click="CollapseButton_Click" />
-			</Grid>
+		<StackPanel
+			Grid.Column="0"
+			Background="#22000000"
+			Name="LeftPanel">
+			<TextBlock
+				Grid.Column="0"
+				Text="LealVault"
+				Margin="10"
+				VerticalAlignment="Center"
+				FontWeight="Bold"/>
 
-			<Button Name="DashboardButton" Content="Dashboard" Margin="5" />
-			<Button Name="RegistersButton" Content="Registers" Margin="5" />
-			<Button Name="CardsButton" Content="Cards" Margin="5" />
-			<Button Name="ConfigurationButton" Content="Configuration" Margin="5" />
+			<Separator
+				HorizontalAlignment="Stretch"/>
+			
+			<Button
+				x:Name="DashboardButton"
+				Content="Dashboard"
+				Background="Transparent"
+				Margin="5"
+				HorizontalAlignment="Stretch"/>
+			<Button
+				x:Name="RegistersButton"
+				Content="Registers"
+				Background="Transparent"
+				Margin="5"
+				HorizontalAlignment="Stretch"/>
+			<Button
+				x:Name="CardsButton"
+				Content="Cards"
+				Background="Transparent"
+				Margin="5"
+				HorizontalAlignment="Stretch"/>
+			<Button
+				x:Name="ConfigurationButton"
+				Content="Configuration"
+				Background="Transparent"
+				Margin="5"
+				HorizontalAlignment="Stretch"/>
 		</StackPanel>
 
 		<ContentControl Grid.Column="1" Name="ContentContainer" />
