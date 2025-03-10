@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LealVault", "LealVault\Leal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LealVault.Common", "LealVault.Common\LealVault.Common.csproj", "{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LealVault.Resources", "LealVault.Resources\LealVault.Resources.csproj", "{9C3DB95C-357F-4753-A74A-0AD3711A3212}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,20 +41,11 @@ Global
 		{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}.Release|x64.Build.0 = Release|Any CPU
 		{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}.Release|x86.ActiveCfg = Release|Any CPU
 		{6D2BDA67-ABD6-4D85-99FA-AD69496897C5}.Release|x86.Build.0 = Release|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Debug|x64.Build.0 = Debug|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Debug|x86.Build.0 = Debug|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Release|x64.ActiveCfg = Release|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Release|x64.Build.0 = Release|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Release|x86.ActiveCfg = Release|Any CPU
-		{9C3DB95C-357F-4753-A74A-0AD3711A3212}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6EBEE909-922E-4774-8B97-CF8602622650}
 	EndGlobalSection
 EndGlobal

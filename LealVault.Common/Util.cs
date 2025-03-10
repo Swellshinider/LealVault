@@ -1,15 +1,9 @@
 ﻿using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LealVault.Common
 {
     /// <summary>
-    /// Provides utility methods for working with SQLite data.
+    /// Provides utility methods
     /// </summary>
     public static class Util
     {
