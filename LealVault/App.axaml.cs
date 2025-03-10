@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using LealVault.View;
+using LealVault.UI;
 
 namespace LealVault;
 
@@ -15,9 +15,7 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new LoginView();
-        }
+            desktop.MainWindow = new LealVaultWindow();
 
         base.OnFrameworkInitializationCompleted();
     }

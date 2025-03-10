@@ -1,9 +1,7 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using LealVault.UI.ViewModels;
 
-namespace LealVault;
+namespace LealVault.UI;
 
 public partial class LealVaultWindow : Window
 {

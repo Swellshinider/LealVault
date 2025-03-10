@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Avalonia.Controls;
+using System.ComponentModel;
 
 namespace LealVault.UI.ViewModels;
 
@@ -6,14 +7,14 @@ public class LealVaultWindowViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private PageType _pageType = PageType.LogIn;
+    private Control _currentPage = new Login();
 
-    public PageType PageType
+    public Control CurrentPage
     {
-        get => _pageType;
+        get => _currentPage;
         set
         {
-            _pageType = value;
+            _currentPage = value;
             OnPropertyChanged(nameof(PageType));
         }
     }
