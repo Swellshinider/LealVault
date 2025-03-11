@@ -1,11 +1,11 @@
 ﻿using Avalonia.Controls;
+using LealVault.UI.Pages;
 using System.ComponentModel;
 
 namespace LealVault.UI.ViewModels;
 
 public class LealVaultWindowViewModel : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     private Control _currentPage = new Login();
 
@@ -15,9 +15,11 @@ public class LealVaultWindowViewModel : INotifyPropertyChanged
         set
         {
             _currentPage = value;
-            OnPropertyChanged(nameof(PageType));
+            OnPropertyChanged(nameof(CurrentPage));
         }
     }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     private void OnPropertyChanged(string propertyName) 
         => PropertyChanged?.Invoke(this, new(propertyName));

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace LealVault.Common
 {
@@ -19,6 +21,18 @@ namespace LealVault.Common
             var value = reader[columnName];
 
             return (T)Convert.ChangeType(value, typeof(T));
+        }
+
+        /// <summary>
+        /// Converts the enum value to a friendly string representation.
+        /// </summary>
+        /// <param name="value">The enum value to convert.</param>
+        /// <returns>A friendly string representation of the enum value.</returns>
+        public static string ToFriendlyString(this Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
+            return attribute?.Description ?? value.ToString();
         }
     }
 }

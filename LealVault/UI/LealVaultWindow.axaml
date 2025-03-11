@@ -8,8 +8,39 @@
         mc:Ignorable="d" 
 		d:DesignWidth="800" 
 		d:DesignHeight="450"
-        Title="LealVault">
+        Title="LealVault"
+		RequestedThemeVariant="Light">
 
-	<ContentControl Content="{Binding CurrentPage}"/>
+	<Window.Styles>
+		<Style Selector="Border">
+			<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+		</Style>
+		<Style Selector="Button">
+			<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+			<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		</Style>
+		<Style Selector="TextBlock">
+			<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		</Style>
+	</Window.Styles>
+
+	<Grid 
+		Margin="5"
+		ShowGridLines="True"
+		RowDefinitions="*, Auto">
+		
+		<!-- Page content -->
+		<ContentControl 
+			Grid.Row="0"
+			Content="{Binding CurrentPage}"/>
+
+		<!-- Footer -->
+		<StackPanel
+			Grid.Row="1">
+			<TextBlock>
+				LealVault - v1 - 2025
+			</TextBlock>
+		</StackPanel>
+	</Grid>
 	
 </Window>

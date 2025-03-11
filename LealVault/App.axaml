@@ -5,4 +5,13 @@
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
+
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<MergeResourceInclude Source="/Assets/Themes/LightTheme.axaml" />
+				<MergeResourceInclude Source="/Assets/Themes/DarkTheme.axaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
 </Application>
