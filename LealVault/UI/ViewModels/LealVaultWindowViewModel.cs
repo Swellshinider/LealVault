@@ -6,7 +6,6 @@ namespace LealVault.UI.ViewModels;
 
 public class LealVaultWindowViewModel : INotifyPropertyChanged
 {
-
     private Control _currentPage = new Login();
 
     public Control CurrentPage

@@ -5,8 +5,8 @@
         xmlns:vm="clr-namespace:LealVault.UI.ViewModels"
 		x:Class="LealVault.UI.LealVaultWindow"
 		x:DataType="vm:LealVaultWindowViewModel"
-        mc:Ignorable="d" 
-		d:DesignWidth="800" 
+        mc:Ignorable="d"
+		d:DesignWidth="800"
 		d:DesignHeight="450"
         Title="LealVault"
 		RequestedThemeVariant="Light">
@@ -24,23 +24,12 @@
 		</Style>
 	</Window.Styles>
 
-	<Grid 
-		Margin="5"
-		ShowGridLines="True"
-		RowDefinitions="*, Auto">
-		
-		<!-- Page content -->
-		<ContentControl 
+	<!-- Page content -->
+	<Border
+		Margin="10">
+		<ContentControl
 			Grid.Row="0"
 			Content="{Binding CurrentPage}"/>
+	</Border>
 
-		<!-- Footer -->
-		<StackPanel
-			Grid.Row="1">
-			<TextBlock>
-				LealVault - v1 - 2025
-			</TextBlock>
-		</StackPanel>
-	</Grid>
-	
 </Window>
