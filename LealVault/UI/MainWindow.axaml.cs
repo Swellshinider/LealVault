@@ -3,13 +3,13 @@ using LealVault.UI.ViewModels;
 
 namespace LealVault.UI;
 
-public partial class CredentialsWindow : Window
+public partial class MainWindow : Window
 {
-    public CredentialsWindow()
+    public MainWindow()
     {
         InitializeComponent();
         DataContext = ViewModel;
     }
 
-    public CredentialsWindowViewModel ViewModel { get; } = new();
+    public MainWindowViewModel ViewModel { get; } = new();
 }

@@ -3,13 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:LealVault.UI.ViewModels"
-		x:Class="LealVault.UI.CredentialsWindow"
-		x:DataType="vm:CredentialsWindowViewModel"
+		x:Class="LealVault.UI.MainWindow"
+		x:DataType="vm:MainWindowViewModel"
         mc:Ignorable="d"
-		d:DesignWidth="800"
-		d:DesignHeight="450"
+		d:DesignWidth="800" 
+		d:DesignHeight="500"
         Title="LealVault"
-		CanResize="False"
 		RequestedThemeVariant="Default">
 
 	<Window.Styles>
@@ -25,11 +24,8 @@
 		</Style>
 	</Window.Styles>
 
-	<DockPanel 
-		Background="AliceBlue"
-		VerticalAlignment="Stretch" 
-		HorizontalAlignment="Stretch">
-
-		
-	</DockPanel>
+	<ContentControl
+		HorizontalAlignment="Stretch"
+		VerticalAlignment="Stretch"
+		Content="{Binding ContainerPage}"/>
 </Window>

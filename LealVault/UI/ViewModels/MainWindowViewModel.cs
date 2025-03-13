@@ -1,21 +1,20 @@
 ﻿using Avalonia.Controls;
+using LealVault.UI.Pages;
 using System.ComponentModel;
 
 namespace LealVault.UI.ViewModels;
 
-public class CredentialsWindowViewModel : INotifyPropertyChanged
+public class MainWindowViewModel : INotifyPropertyChanged
 {
-    private bool _isLogin = true;
-    private string _username = "";
-    private string _password = "";
+    private Control _containerPage = new LoginPage();
 
-    public bool IsLogin
+    public Control ContainerPage
     {
-        get => _isLogin;
+        get => _containerPage;
         set
         {
-            _isLogin = value;
-            OnPropertyChanged(nameof(IsLogin));
+            _containerPage = value;
+            OnPropertyChanged(nameof(ContainerPage));
         }
     }
 

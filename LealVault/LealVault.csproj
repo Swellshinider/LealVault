@@ -34,8 +34,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="UI\CredentialsWindow.axaml.cs">
-	    <DependentUpon>CredentialsWindow.axaml</DependentUpon>
+	  <Compile Update="UI\MainWindow.axaml.cs">
+	    <DependentUpon>MainWindow.axaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 

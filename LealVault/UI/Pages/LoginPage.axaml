@@ -2,36 +2,64 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
              x:Class="LealVault.UI.Pages.LoginPage">
 
-	<Grid 
-		VerticalAlignment="Center" 
+	<Grid
+		ColumnDefinitions="Auto"
+		RowDefinitions="Auto, Auto, Auto, Auto"
+		VerticalAlignment="Center"
 		HorizontalAlignment="Center">
-		
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="200" />
-		</Grid.ColumnDefinitions>
 
-		<TextBlock Grid.Row="0" Grid.Column="0" Text="Username:" Margin="5"/>
-		<TextBox Grid.Row="0" Grid.Column="1" Margin="5"/>
-		<TextBlock Grid.Row="1" Grid.Column="0" Text="Password:" Margin="5"/>
-		<TextBox Grid.Row="1" Grid.Column="1" PasswordChar="*" Margin="5"/>
-		<Button Grid.Row="2" Grid.Column="1" Content="Login" Margin="5"/>
-
-		<TextBlock
+		<!-- Username -->
+		<TextBox
+			Grid.Row="0"
+			Grid.Column="0"
 			Margin="5"
+			Watermark="Username"
+			VerticalAlignment="Center"/>
+
+		<!-- Password -->
+		<TextBox
+			Grid.Row="1"
+			Grid.Column="0"
+			Margin="5"
+			PasswordChar="*"
+			Watermark="Password"
+			VerticalAlignment="Center"/>
+
+		<!-- Butto Login -->
+		<Button
+			Grid.Row="2"
+			Grid.Column="1"
+			HorizontalAlignment="Stretch"
+			Cursor="Hand"
+			Margin="5">
+
+			<TextBlock
+				TextAlignment="Center"
+				Text="Login"/>
+		</Button>
+
+		<Grid
 			Grid.Row="3"
 			Grid.Column="1"
-			HorizontalAlignment="Center"
-			Text="Don't have an account? Sign up."/>
+			ColumnDefinitions="*, Auto">
+
+			<TextBlock
+				Grid.Column="0"
+				Margin="5, 5, 1, 5"
+				HorizontalAlignment="Center"
+				Text="Don't have an account?"/>
+
+			<TextBlock
+				Grid.Column="1"
+				Margin="1, 5, 5, 5"
+				HorizontalAlignment="Left"
+				Foreground="Blue"
+				Cursor="Hand"
+				Text="Create here!"/>
+		</Grid>
 	</Grid>
 
 </UserControl>

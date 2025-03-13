@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:LealVault.UI.ViewModels"
+		x:DataType="vm:AthenticationWindowViewModel"
+        x:Class="LealVault.UI.AuthenticationWindow"
+		mc:Ignorable="d" 
+		d:DesignWidth="500"
+		d:DesignHeight="500"
+		Width="500"
+		Height="500"
+		CanResize="False"
+        Title="LealVault | Authentication"
+		RequestedThemeVariant="Default">
+
+	<ContentControl
+		HorizontalAlignment="Stretch"
+		VerticalAlignment="Stretch"
+		Content="{Binding ContainerPage}"/>
+	
+</Window>
