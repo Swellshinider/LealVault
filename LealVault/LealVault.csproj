@@ -33,4 +33,14 @@
 		<AvaloniaResource Include="Assets\Fonts\**" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="UI\Pages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="UI\CredentialsWindow.axaml.cs">
+	    <DependentUpon>CredentialsWindow.axaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 </Project>
