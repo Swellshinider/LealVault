@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LealVault.UI.Pages.LoginPage">
+
+	<Grid 
+		VerticalAlignment="Center" 
+		HorizontalAlignment="Center">
+		
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="200" />
+		</Grid.ColumnDefinitions>
+
+		<TextBlock Grid.Row="0" Grid.Column="0" Text="Username:" Margin="5"/>
+		<TextBox Grid.Row="0" Grid.Column="1" Margin="5"/>
+		<TextBlock Grid.Row="1" Grid.Column="0" Text="Password:" Margin="5"/>
+		<TextBox Grid.Row="1" Grid.Column="1" PasswordChar="*" Margin="5"/>
+		<Button Grid.Row="2" Grid.Column="1" Content="Login" Margin="5"/>
+
+		<TextBlock
+			Margin="5"
+			Grid.Row="3"
+			Grid.Column="1"
+			HorizontalAlignment="Center"
+			Text="Don't have an account? Sign up."/>
+	</Grid>
+
+</UserControl>
