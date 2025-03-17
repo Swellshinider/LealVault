@@ -2,7 +2,116 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
              x:Class="LealVault.SignUpPage">
-  Welcome to Avalonia!
+
+	<Grid
+		ColumnDefinitions="Auto"
+		RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+		HorizontalAlignment="Center">
+
+		<!-- Title -->
+		<StackPanel
+			Grid.Row="0"
+			Grid.Column="0"
+			Margin="0, 70, 0, 0">
+
+			<TextBlock
+				Margin="10"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				FontSize="48"
+				Text="LealVault"/>
+
+			<TextBlock
+				Margin="5"
+				FontStyle="Italic"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center"
+				Text="Create Account"/>
+
+		</StackPanel>
+
+		<!-- Username -->
+		<TextBox
+			Grid.Row="1"
+			Grid.Column="0"
+			Margin="5"
+			Watermark="Username"
+			VerticalAlignment="Center"/>
+
+		<!-- Password -->
+		<TextBox
+			Grid.Row="2"
+			Grid.Column="0"
+			Margin="5"
+			PasswordChar="*"
+			Watermark="Password"
+			VerticalAlignment="Center"/>
+
+		<TextBox
+			Grid.Row="3"
+			Grid.Column="0"
+			Margin="5"
+			PasswordChar="*"
+			Watermark="Confirm Password"
+			VerticalAlignment="Center"/>
+
+		<!-- Checkbox -->
+		<Grid
+			Grid.Row="4"
+			Grid.Column="1"
+			Margin="5"
+			VerticalAlignment="Stretch"
+			HorizontalAlignment="Stretch">
+
+			<CheckBox Content="Toggle Password"/>
+			
+			<Button
+				Cursor="Hand"
+				HorizontalAlignment="Right">
+
+				<TextBlock
+					Text="Generate"
+					HorizontalAlignment="Stretch"
+					TextAlignment="Center"/>
+				
+			</Button>
+			
+		</Grid>
+
+		<!-- Butto Login -->
+		<Button
+			Grid.Row="5"
+			Grid.Column="1"
+			Margin="5"
+			Cursor="Hand"
+			HorizontalAlignment="Stretch">
+
+			<TextBlock
+				TextAlignment="Center"
+				Text="Login"/>
+		</Button>
+
+		<Grid
+			Grid.Row="6"
+			Grid.Column="1"
+			ColumnDefinitions="*, Auto">
+
+			<TextBlock
+				Grid.Column="0"
+				Margin="5, 5, 1, 5"
+				HorizontalAlignment="Center"
+				Text="Already have an account?"/>
+
+			<TextBlock
+				Grid.Column="1"
+				Margin="1, 5, 5, 5"
+				HorizontalAlignment="Left"
+				Foreground="Blue"
+				Cursor="Hand"
+				Text="Enter here!"/>
+		</Grid>
+	</Grid>
+
 </UserControl>
