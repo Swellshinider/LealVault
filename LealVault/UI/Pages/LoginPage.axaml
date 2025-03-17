@@ -7,13 +7,34 @@
 
 	<Grid
 		ColumnDefinitions="Auto"
-		RowDefinitions="Auto, Auto, Auto, Auto"
-		VerticalAlignment="Center"
+		RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto"
 		HorizontalAlignment="Center">
+
+		<!-- Title -->
+		<StackPanel
+			Grid.Row="0"
+			Grid.Column="0"
+			Margin="0, 100, 0, 0">
+
+			<TextBlock
+				Margin="10"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				FontSize="48"
+				Text="LealVault"/>
+
+			<TextBlock
+				Margin="5"
+				FontStyle="Italic"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center"
+				Text="Login"/>
+
+		</StackPanel>
 
 		<!-- Username -->
 		<TextBox
-			Grid.Row="0"
+			Grid.Row="1"
 			Grid.Column="0"
 			Margin="5"
 			Watermark="Username"
@@ -21,20 +42,32 @@
 
 		<!-- Password -->
 		<TextBox
-			Grid.Row="1"
+			Grid.Row="2"
 			Grid.Column="0"
 			Margin="5"
 			PasswordChar="*"
 			Watermark="Password"
 			VerticalAlignment="Center"/>
 
+		<!-- Checkbox -->
+		<CheckBox
+			Grid.Row="3"
+			Grid.Column="1"
+			Margin="5, 0, 0, 0">
+
+			<TextBlock
+				FontSize="12"
+				FontStyle="Italic"
+				Text="Remember username"/>
+		</CheckBox>
+
 		<!-- Butto Login -->
 		<Button
-			Grid.Row="2"
+			Grid.Row="4"
 			Grid.Column="1"
-			HorizontalAlignment="Stretch"
+			Margin="5"
 			Cursor="Hand"
-			Margin="5">
+			HorizontalAlignment="Stretch">
 
 			<TextBlock
 				TextAlignment="Center"
@@ -42,7 +75,7 @@
 		</Button>
 
 		<Grid
-			Grid.Row="3"
+			Grid.Row="5"
 			Grid.Column="1"
 			ColumnDefinitions="*, Auto">
 
