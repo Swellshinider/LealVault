@@ -80,7 +80,7 @@
 			
 		</Grid>
 
-		<!-- Butto Login -->
+		<!-- Button Login -->
 		<Button
 			Grid.Row="5"
 			Grid.Column="1"
@@ -110,6 +110,7 @@
 				HorizontalAlignment="Left"
 				Foreground="Blue"
 				Cursor="Hand"
+				PointerPressed="TextBlock_PointerPressed"
 				Text="Enter here!"/>
 		</Grid>
 	</Grid>

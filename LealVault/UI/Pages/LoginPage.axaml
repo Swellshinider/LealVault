@@ -34,6 +34,7 @@
 
 		<!-- Username -->
 		<TextBox
+			x:Name="TextBoxUsername"
 			Grid.Row="1"
 			Grid.Column="0"
 			Margin="5"
@@ -42,6 +43,7 @@
 
 		<!-- Password -->
 		<TextBox
+			x:Name="TextBoxPassword"
 			Grid.Row="2"
 			Grid.Column="0"
 			Margin="5"
@@ -51,6 +53,7 @@
 
 		<!-- Checkbox -->
 		<CheckBox
+			x:Name="CheckBoxRememberUsername"
 			Grid.Row="3"
 			Grid.Column="1"
 			Margin="5, 0, 0, 0">
@@ -91,6 +94,7 @@
 				HorizontalAlignment="Left"
 				Foreground="Blue"
 				Cursor="Hand"
+				PointerPressed="TextBlock_PointerPressed"
 				Text="Create here!"/>
 		</Grid>
 	</Grid>

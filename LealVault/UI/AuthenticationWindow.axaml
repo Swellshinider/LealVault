@@ -15,6 +15,7 @@
 		RequestedThemeVariant="Default">
 
 	<ContentControl
+		x:Name="Container"
 		HorizontalAlignment="Stretch"
 		VerticalAlignment="Stretch"
 		Content="{Binding ContainerPage}"/>

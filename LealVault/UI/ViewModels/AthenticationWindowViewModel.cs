@@ -1,14 +1,12 @@
-﻿using Avalonia.Controls;
-using LealVault.UI.Pages;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace LealVault.UI.ViewModels;
 
 public class AthenticationWindowViewModel : INotifyPropertyChanged
 {
-    private Control _containerPage = new LoginPage();
+    private Control? _containerPage;
 
-    public Control ContainerPage
+    public Control? ContainerPage
     {
         get => _containerPage;
         set
