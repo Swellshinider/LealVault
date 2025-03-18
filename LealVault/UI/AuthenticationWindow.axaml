@@ -13,11 +13,19 @@
 		CanResize="False"
         Title="LealVault | Authentication"
 		RequestedThemeVariant="Default">
+	<Border>
+		<Border.Background>
+			<ImageBrush 
+				Stretch="UniformToFill"
+				Source="avares://LealVault/Assets/Images/wallpaper.png"/>
+		</Border.Background>
 
-	<ContentControl
-		x:Name="Container"
-		HorizontalAlignment="Stretch"
-		VerticalAlignment="Stretch"
-		Content="{Binding ContainerPage}"/>
+		<ContentControl
+			x:Name="Container"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			Content="{Binding ContainerPage}"/>
+		
+	</Border>
 	
 </Window>
