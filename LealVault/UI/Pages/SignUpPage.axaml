@@ -37,28 +37,34 @@
 
 		<!-- Username -->
 		<TextBox
+			x:Name="TextBoxUsername"
 			Grid.Row="1"
 			Grid.Column="0"
 			Margin="5"
 			Watermark="Username"
-			VerticalAlignment="Center"/>
+			VerticalAlignment="Center"
+			KeyDown="TextBox_Enter"/>
 
 		<!-- Password -->
 		<TextBox
+			x:Name="TextBoxPassword"
 			Grid.Row="2"
 			Grid.Column="0"
 			Margin="5"
 			PasswordChar="*"
 			Watermark="Password"
-			VerticalAlignment="Center"/>
+			VerticalAlignment="Center"
+			KeyDown="TextBox_Enter"/>
 
 		<TextBox
+			x:Name="TextBoxPasswordConfirm"
 			Grid.Row="3"
 			Grid.Column="0"
 			Margin="5"
 			PasswordChar="*"
 			Watermark="Confirm Password"
-			VerticalAlignment="Center"/>
+			VerticalAlignment="Center"
+			KeyDown="TextBox_Enter"/>
 
 		<!-- Checkbox -->
 		<Grid
@@ -72,6 +78,7 @@
 			
 			<Button
 				Cursor="Hand"
+				Click="ButtonClick_GeneratePassword"
 				HorizontalAlignment="Right">
 
 				<TextBlock

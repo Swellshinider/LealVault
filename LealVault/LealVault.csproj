@@ -24,6 +24,7 @@
 			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
 			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />
 		<PackageReference Include="System.Text.Json" Version="9.0.3" />
 	</ItemGroup>
 
@@ -46,6 +47,7 @@
 	  <Using Include="Avalonia" />
 	  <Using Include="Avalonia.Controls" />
 	  <Using Include="Avalonia.Input" />
+	  <Using Include="Avalonia.Interactivity" />
 	</ItemGroup>
 
 </Project>
