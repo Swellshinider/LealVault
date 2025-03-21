@@ -107,7 +107,7 @@ public static class Security
     /// <param name="password">The password to hash.</param>
     /// <param name="salt">The generated salt used in hashing.</param>
     /// <returns>A byte array containing the hashed password.</returns>
-    public static byte[] HashPassword(string password, out byte[] salt)
+    public static byte[] HashPassword(this string password, out byte[] salt)
     {
         salt = GenerateSalt();
 
@@ -127,7 +127,7 @@ public static class Security
     /// <param name="salt">The salt used during the original hashing.</param>
     /// <param name="hashedPassword">The original hashed password to compare against.</param>
     /// <returns>True if the computed hash matches the provided hash; otherwise, false.</returns>
-    public static bool VerifyPassword(string password, byte[] salt, byte[] hashedPassword)
+    public static bool VerifyPassword(this string password, byte[] salt, byte[] hashedPassword)
     {
         using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password));
         argon2.Salt = salt;

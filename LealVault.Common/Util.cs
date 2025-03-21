@@ -34,5 +34,11 @@ namespace LealVault.Common
             var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
             return attribute?.Description ?? value.ToString();
         }
+
+        /// <summary>
+        /// Generates a new GUID
+        /// </summary>
+        public static string GenerateGuid() 
+            => Guid.NewGuid().ToString();
     }
 }

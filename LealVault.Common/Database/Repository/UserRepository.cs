@@ -1,5 +1,6 @@
 ﻿using LealVault.Common.Database.Models;
 using LealVault.Common.Database.Repository.Base;
+using System;
 using System.Data;
 
 namespace LealVault.Common.Database.Repository;
@@ -102,5 +103,39 @@ public sealed class UserRepository : Repository<User>
         command.Parameters.AddWithValue("ID", guid);
 
         await command.ExecuteNonQueryAsync();
+    }
+
+    /// <summary>
+    /// Gets a user by its username.    
+    /// </summary>
+    public async Task<User?> GetByName(string username)
+    {
+        using var command = NewCommand();
+        command.CommandText = @$"SELECT
+                                    user_id,
+                                    username,
+                                    password,
+                                    salt
+                                FROM
+                                    User
+                                WHERE
+                                    username = @USER";
+
+        command.Parameters.AddWithValue("USER", username);
+
+        var reader = await command.ExecuteReaderAsync(CommandBehavior.SingleRow);
+
+        if (await reader.ReadAsync())
+        {
+            return new User
+            {
+                Id = reader.GetTypedValue<string>("user_id"),
+                Username = reader.GetTypedValue<string>("username"),
+                Password = reader.GetTypedValue<byte[]>("password"),
+                Salt = reader.GetTypedValue<byte[]>("salt")
+            };
+        }
+
+        return null;
     }
 }
