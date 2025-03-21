@@ -74,7 +74,9 @@
 			VerticalAlignment="Stretch"
 			HorizontalAlignment="Stretch">
 
-			<CheckBox Content="Toggle Password"/>
+			<CheckBox 
+				Click="CheckBox_Click"
+				Content="Toggle Password"/>
 			
 			<Button
 				Cursor="Hand"
@@ -96,6 +98,7 @@
 			Grid.Column="1"
 			Margin="5"
 			Cursor="Hand"
+			PointerPressed="Button_PointerPressed"
 			HorizontalAlignment="Stretch">
 
 			<TextBlock

@@ -1,3 +1,4 @@
+using LealVault.Common.Database.Models;
 using LealVault.UI.Pages;
 using LealVault.UI.ViewModels;
 
@@ -15,6 +16,7 @@ public partial class AuthenticationWindow : Window
 
         _loginPage.CreateAccountPressed += LoginPage_CreateAccountPressed;
         _signUpPage.EnterAccountPressed += SignUpPage_EnterAccountPressed;
+        _signUpPage.LoggedIn += SignUpPage_LoggedIn;
 
         ViewModel.ContainerPage = _loginPage;
     }
@@ -26,4 +28,9 @@ public partial class AuthenticationWindow : Window
 
     private void LoginPage_CreateAccountPressed() 
         => ViewModel.ContainerPage = _signUpPage;
+
+    private void SignUpPage_LoggedIn(User user)
+    {
+
+    }
 }

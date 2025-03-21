@@ -10,10 +10,14 @@ namespace LealVault.Common.Database
 
         internal DatabaseContext()
         {
-            var filePath = Path.Combine(Configuration.BaseDirectory, "Data/lealvault.sqlite3");
+            var directoryPath = Path.Combine(Configuration.BaseDirectory, "Data");
+            var filePath = Path.Combine(directoryPath, "lealvault.sqlite3");
+
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
 
             if (!File.Exists(filePath))
-                File.Create(filePath);
+                File.Create(filePath).Dispose();
 
             _connection = new($"Data Source={filePath}");
             _connection.Open();
@@ -24,7 +28,7 @@ namespace LealVault.Common.Database
 
         private void Initialize()
         {
-            if (!Configuration.DatabaseCreated)
+            if (Configuration.DatabaseCreated)
                 return;
 
             using var command = GetCommand();
