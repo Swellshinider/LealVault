@@ -6,7 +6,7 @@
 			 d:DesignWidth="500" 
 			 d:DesignHeight="500"
              x:Class="LealVault.UI.Pages.LoginPage"
-			 Background="#33000000">
+			 Background="#55000000">
 
 	<Grid
 		ColumnDefinitions="Auto"

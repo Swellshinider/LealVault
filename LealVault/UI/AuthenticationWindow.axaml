@@ -11,6 +11,7 @@
 		Width="500"
 		Height="500"
 		CanResize="False"
+		WindowStartupLocation="CenterScreen"
         Title="LealVault | Authentication"
 		RequestedThemeVariant="Default">
 	<Border>
