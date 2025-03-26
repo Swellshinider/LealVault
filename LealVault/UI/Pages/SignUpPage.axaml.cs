@@ -1,7 +1,9 @@
 
+using Avalonia.Controls;
 using LealVault.Common;
 using LealVault.Common.Database.Models;
 using LealVault.Common.Database.Repository;
+using LealVault.Utilities;
 using MsBox.Avalonia.Enums;
 
 namespace LealVault;
@@ -99,6 +101,16 @@ public partial class SignUpPage : UserControl
 
     private void TextBlock_PointerPressed(object? sender, PointerPressedEventArgs e)
         => EnterAccountPressed?.Invoke();
+
+    private void ButtonToggleConfirmTapped(object? sender, TappedEventArgs e)
+    {
+        var isHidden = TextBoxPassword.PasswordChar == '*';
+        TextBoxPassword.PasswordChar = isHidden ? '\0' : '*';
+        TextBoxPasswordConfirm.PasswordChar = isHidden ? '\0' : '*';
+        ImageToggleVisibleConfirmPassword.Source = isHidden
+            ? ImageKind.White_OpennedEye.GetImage()
+            : ImageKind.White_HorizontalLine.GetImage();
+    }
 
     private async void Button_PointerPressed(object? sender, PointerPressedEventArgs e)
         => await CreateAccount();

@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
-			 d:DesignWidth="500" 
+             mc:Ignorable="d"
+			 d:DesignWidth="500"
 			 d:DesignHeight="500"
              x:Class="LealVault.SignUpPage"
 			 Background="#55000000">
@@ -50,23 +50,45 @@
 			x:Name="TextBoxPassword"
 			Grid.Row="2"
 			Grid.Column="0"
-			Margin="5"
 			PasswordChar="*"
+			Margin="5"
 			Watermark="Password"
 			VerticalAlignment="Center"
 			KeyDown="TextBox_Enter"/>
 
-		<TextBox
-			x:Name="TextBoxPasswordConfirm"
+		<Grid
 			Grid.Row="3"
 			Grid.Column="0"
-			Margin="5"
-			PasswordChar="*"
-			Watermark="Confirm Password"
-			VerticalAlignment="Center"
-			KeyDown="TextBox_Enter"/>
+			ColumnDefinitions="*, Auto"
+			Margin="5">
 
-		<!-- Checkbox -->
+			<!-- Confirm Password -->
+			<TextBox
+				x:Name="TextBoxPasswordConfirm"
+				Grid.Column="0"
+				PasswordChar="*"
+				Watermark="Confirm Password"
+				VerticalAlignment="Center"
+				KeyDown="TextBox_Enter"/>
+
+			<!-- Toggle Confirm Password -->
+			<Button
+				Grid.Column="1"
+				MaxHeight="32"
+				Cursor="Hand"
+				VerticalAlignment="Stretch"
+				HorizontalAlignment="Stretch"
+				Background="Transparent"
+				Tapped="ButtonToggleConfirmTapped">
+
+				<Image
+					x:Name="ImageToggleVisibleConfirmPassword"
+					Source="/Assets/Images/horizontal_line.png"/>
+			</Button>
+
+		</Grid>
+
+		<!-- Checkbox and Generate -->
 		<Grid
 			Grid.Row="4"
 			Grid.Column="1"
@@ -74,10 +96,10 @@
 			VerticalAlignment="Stretch"
 			HorizontalAlignment="Stretch">
 
-			<CheckBox 
+			<CheckBox
 				Click="CheckBox_Click"
 				Content="Toggle Password"/>
-			
+
 			<Button
 				Cursor="Hand"
 				Click="ButtonClick_GeneratePassword"
@@ -87,9 +109,9 @@
 					Text="Generate"
 					HorizontalAlignment="Stretch"
 					TextAlignment="Center"/>
-				
+
 			</Button>
-			
+
 		</Grid>
 
 		<!-- Button Login -->

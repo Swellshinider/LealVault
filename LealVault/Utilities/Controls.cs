@@ -3,9 +3,9 @@ using MsBox.Avalonia.Dto;
 using MsBox.Avalonia.Enums;
 using MsBox.Avalonia.Models;
 
-namespace LealVault;
+namespace LealVault.Utilities;
 
-public static class Util
+public static class Controls
 {
     public static async Task<string> DisplayMessageBox(this Window? window, string title, string message, Icon icon, List<ButtonDefinition> buttons)
     {
