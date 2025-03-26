@@ -66,7 +66,7 @@ public partial class SignUpPage : UserControl
 
             var entity = new User()
             {
-                Id = Common.Util.GenerateGuid(),
+                Id = Util.GenerateGuid(),
                 Username = username,
                 Password = hashedPassword,
                 Salt = salt
@@ -102,7 +102,7 @@ public partial class SignUpPage : UserControl
     private void TextBlock_PointerPressed(object? sender, PointerPressedEventArgs e)
         => EnterAccountPressed?.Invoke();
 
-    private void ButtonToggleConfirmTapped(object? sender, TappedEventArgs e)
+    private void ButtonToggleTapped(object? sender, TappedEventArgs e)
     {
         var isHidden = TextBoxPassword.PasswordChar == '*';
         TextBoxPassword.PasswordChar = isHidden ? '\0' : '*';

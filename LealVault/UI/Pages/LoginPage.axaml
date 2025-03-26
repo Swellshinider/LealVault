@@ -42,17 +42,40 @@
 			Grid.Column="0"
 			Margin="5"
 			Watermark="Username"
-			VerticalAlignment="Center"/>
+			VerticalAlignment="Center"
+			KeyDown="TextBox_Enter"/>
 
 		<!-- Password -->
-		<TextBox
-			x:Name="TextBoxPassword"
+		<Grid
 			Grid.Row="2"
 			Grid.Column="0"
-			Margin="5"
-			PasswordChar="*"
-			Watermark="Password"
-			VerticalAlignment="Center"/>
+			ColumnDefinitions="*, Auto"
+			Margin="5">
+
+			<TextBox
+				x:Name="TextBoxPassword"
+				Grid.Column="0"
+				PasswordChar="*"
+				Watermark="Password"
+				VerticalAlignment="Center"
+				KeyDown="TextBox_Enter"/>
+
+			<!-- Toggle Password -->
+			<Button
+				Grid.Column="1"
+				MaxHeight="32"
+				Cursor="Hand"
+				VerticalAlignment="Stretch"
+				HorizontalAlignment="Stretch"
+				Background="Transparent"
+				Tapped="ButtonToggleTapped">
+
+				<Image
+					x:Name="ImageToggleVisibleConfirmPassword"
+					Source="/Assets/Images/horizontal_line.png"/>
+			</Button>
+
+		</Grid>
 
 		<!-- Checkbox -->
 		<CheckBox
@@ -67,13 +90,14 @@
 				Text="Remember username"/>
 		</CheckBox>
 
-		<!-- Butto Login -->
+		<!-- Button Login -->
 		<Button
 			Grid.Row="4"
 			Grid.Column="1"
 			Margin="5"
 			Cursor="Hand"
-			HorizontalAlignment="Stretch">
+			HorizontalAlignment="Stretch"
+			Tapped="ButtonLoginTapped">
 
 			<TextBlock
 				TextAlignment="Center"
@@ -97,7 +121,7 @@
 				HorizontalAlignment="Left"
 				Foreground="Blue"
 				Cursor="Hand"
-				PointerPressed="TextBlock_PointerPressed"
+				PointerPressed="TextBlockCreateAccountPointerPressed"
 				Text="Create here!"/>
 		</Grid>
 	</Grid>

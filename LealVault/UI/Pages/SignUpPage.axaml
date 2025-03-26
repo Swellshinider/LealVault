@@ -79,7 +79,7 @@
 				VerticalAlignment="Stretch"
 				HorizontalAlignment="Stretch"
 				Background="Transparent"
-				Tapped="ButtonToggleConfirmTapped">
+				Tapped="ButtonToggleTapped">
 
 				<Image
 					x:Name="ImageToggleVisibleConfirmPassword"
