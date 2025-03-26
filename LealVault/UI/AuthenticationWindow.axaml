@@ -5,28 +5,52 @@
         xmlns:vm="clr-namespace:LealVault.UI.ViewModels"
 		x:DataType="vm:AthenticationWindowViewModel"
         x:Class="LealVault.UI.AuthenticationWindow"
-		mc:Ignorable="d" 
-		d:DesignWidth="500"
-		d:DesignHeight="500"
-		Width="500"
-		Height="500"
+		mc:Ignorable="d"
+		d:DesignWidth="1366"
+		d:DesignHeight="768"
+		Width="1366"
+		Height="768"
 		CanResize="False"
 		WindowStartupLocation="CenterScreen"
         Title="LealVault | Authentication"
 		RequestedThemeVariant="Default">
-	<Border>
-		<Border.Background>
-			<ImageBrush 
+
+	<Window.Styles>
+		<Style Selector="Border">
+			<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+		</Style>
+		<Style Selector="Button">
+			<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+			<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource ForegroundBrush}" />
+			<Setter Property="CornerRadius" Value="1"/>
+		</Style>
+		<Style Selector="TextBlock">
+			<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		</Style>
+	</Window.Styles>
+
+	<Grid
+		RowDefinitions="*"
+		ColumnDefinitions="0, *, 0">
+		<Grid.Background>
+			<ImageBrush
 				Stretch="UniformToFill"
 				Source="avares://LealVault/Assets/Images/wallpaper.png"/>
-		</Border.Background>
+		</Grid.Background>
 
-		<ContentControl
-			x:Name="Container"
+		<Border
+			Grid.Column="1"
 			HorizontalAlignment="Stretch"
 			VerticalAlignment="Stretch"
-			Content="{Binding ContainerPage}"/>
-		
-	</Border>
-	
+			Background="#66000000">
+
+			<ContentControl
+				x:Name="Container"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Stretch"
+				Content="{Binding ContainerPage}"/>
+		</Border>
+	</Grid>
+
 </Window>

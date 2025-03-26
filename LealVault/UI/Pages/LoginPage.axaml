@@ -5,8 +5,9 @@
              mc:Ignorable="d" 
 			 d:DesignWidth="500" 
 			 d:DesignHeight="500"
-             x:Class="LealVault.UI.Pages.LoginPage"
-			 Background="#55000000">
+			 Width="500"
+			 Height="500"
+             x:Class="LealVault.UI.Pages.LoginPage">
 
 	<Grid
 		ColumnDefinitions="Auto"
@@ -41,6 +42,7 @@
 			Grid.Row="1"
 			Grid.Column="0"
 			Margin="5"
+			MinWidth="300"
 			Watermark="Username"
 			VerticalAlignment="Center"
 			KeyDown="TextBox_Enter"/>
@@ -68,6 +70,7 @@
 				VerticalAlignment="Stretch"
 				HorizontalAlignment="Stretch"
 				Background="Transparent"
+				BorderThickness="0"
 				Tapped="ButtonToggleTapped">
 
 				<Image
@@ -104,26 +107,27 @@
 				Text="Login"/>
 		</Button>
 
-		<Grid
+		<!-- Message -->
+		<StackPanel
 			Grid.Row="5"
 			Grid.Column="1"
-			ColumnDefinitions="*, Auto">
+			Orientation="Horizontal">
 
 			<TextBlock
 				Grid.Column="0"
-				Margin="5, 5, 1, 5"
-				HorizontalAlignment="Center"
+				Margin="5"
+				HorizontalAlignment="Left"
 				Text="Don't have an account?"/>
 
 			<TextBlock
 				Grid.Column="1"
-				Margin="1, 5, 5, 5"
+				Margin="5"
 				HorizontalAlignment="Left"
 				Foreground="Blue"
 				Cursor="Hand"
-				PointerPressed="TextBlockCreateAccountPointerPressed"
-				Text="Create here!"/>
-		</Grid>
+				Text="Create here!"
+				PointerPressed="TextBlockCreateAccountPointerPressed"/>
+		</StackPanel>
 	</Grid>
 
 </UserControl>

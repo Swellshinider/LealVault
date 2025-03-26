@@ -5,8 +5,9 @@
              mc:Ignorable="d"
 			 d:DesignWidth="500"
 			 d:DesignHeight="500"
-             x:Class="LealVault.SignUpPage"
-			 Background="#55000000">
+			 Width="500"
+			 Height="500"
+             x:Class="LealVault.SignUpPage">
 
 	<Grid
 		ColumnDefinitions="Auto"
@@ -41,6 +42,7 @@
 			Grid.Row="1"
 			Grid.Column="0"
 			Margin="5"
+			MinWidth="300"
 			Watermark="Username"
 			VerticalAlignment="Center"
 			KeyDown="TextBox_Enter"/>
@@ -79,6 +81,7 @@
 				VerticalAlignment="Stretch"
 				HorizontalAlignment="Stretch"
 				Background="Transparent"
+				BorderThickness="0"
 				Tapped="ButtonToggleTapped">
 
 				<Image
@@ -88,33 +91,22 @@
 
 		</Grid>
 
-		<!-- Checkbox and Generate -->
-		<Grid
+		<!-- Generate -->
+		<Button
 			Grid.Row="4"
 			Grid.Column="1"
+			Cursor="Hand"
 			Margin="5"
-			VerticalAlignment="Stretch"
+			Click="ButtonClick_GeneratePassword"
 			HorizontalAlignment="Stretch">
 
-			<CheckBox
-				Click="CheckBox_Click"
-				Content="Toggle Password"/>
+			<TextBlock
+				TextAlignment="Center"
+				Text="Generate Password"/>
 
-			<Button
-				Cursor="Hand"
-				Click="ButtonClick_GeneratePassword"
-				HorizontalAlignment="Right">
+		</Button>
 
-				<TextBlock
-					Text="Generate"
-					HorizontalAlignment="Stretch"
-					TextAlignment="Center"/>
-
-			</Button>
-
-		</Grid>
-
-		<!-- Button Login -->
+		<!-- Button Create Account -->
 		<Button
 			Grid.Row="5"
 			Grid.Column="1"
@@ -125,29 +117,30 @@
 
 			<TextBlock
 				TextAlignment="Center"
-				Text="Login"/>
+				Text="Create Account"/>
 		</Button>
 
-		<Grid
+		<!-- Message -->
+		<StackPanel
 			Grid.Row="6"
 			Grid.Column="1"
-			ColumnDefinitions="*, Auto">
+			Orientation="Horizontal">
 
 			<TextBlock
 				Grid.Column="0"
-				Margin="5, 5, 1, 5"
-				HorizontalAlignment="Center"
+				Margin="5"
+				HorizontalAlignment="Left"
 				Text="Already have an account?"/>
 
 			<TextBlock
 				Grid.Column="1"
-				Margin="1, 5, 5, 5"
+				Margin="5"
 				HorizontalAlignment="Left"
 				Foreground="Blue"
 				Cursor="Hand"
 				PointerPressed="TextBlock_PointerPressed"
 				Text="Login Here!"/>
-		</Grid>
+		</StackPanel>
 	</Grid>
 
 </UserControl>
