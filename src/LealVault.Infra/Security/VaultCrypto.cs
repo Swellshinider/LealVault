@@ -114,6 +114,9 @@ public static class VaultCrypto
         // [cipher length(4)]
         // [cipher bytes]
 
+        if (fs.Length == 0) // (empty file)
+            return null;
+
         var magic = br.ReadBytes(MAGIC.Length); // [MAGIC(4)]
 
         if (!AreEqual(magic, MAGIC)) // (magic mismatch)

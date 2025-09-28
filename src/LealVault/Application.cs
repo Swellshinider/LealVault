@@ -25,10 +25,8 @@ public static class Application
                 continue;
 
             var executionResult = CommandHandler.Execute(input);
-
-            if (!executionResult.Success)
-                executionResult.Message.WriteLine(ConsoleColor.Red);
-
+            executionResult.Message?.WriteLine(executionResult.Success ? ConsoleColor.Green : ConsoleColor.Red);
+            
             if (executionResult.ShouldExit)
             {
                 "Exiting...".WriteLine();

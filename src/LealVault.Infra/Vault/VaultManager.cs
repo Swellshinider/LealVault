@@ -15,7 +15,7 @@ public sealed class VaultManager
     /// <summary>
     /// Log message event
     /// </summary>
-    public event LogMessage? LogMessageEvent;
+    public event LogMessage? LogError;
 
     private string? _vaultPath;
 
@@ -27,7 +27,7 @@ public sealed class VaultManager
     /// <summary>
     /// The master password
     /// </summary>
-    public string? MasterPassword { get; private set; }
+    public string? MasterPassword { get; set; }
 
     /// <summary>
     /// The vault data
@@ -37,121 +37,156 @@ public sealed class VaultManager
     /// <summary>
     /// Create a new vault
     /// </summary>
-    public void Create(string vaultPath)
+    public bool Create(string vaultPath)
     {
         if (IsOpen)
         {
-            LogMessageEvent?.Invoke("A vault is currently open, please close it before creating a new one.");
-            return;
+            LogError?.Invoke("A vault is currently open, please close it before creating a new one.");
+            return false;
         }
 
-        if (!IsPathValid(vaultPath))
-            return;
+        if (!IsPathValid(vaultPath, out _vaultPath))
+            return false;
 
-        _vaultPath = vaultPath;
-        using var _ = File.Create(_vaultPath);
+        if (!TryCreateFile(_vaultPath))
+            return false;
+
+        VaultCrypto.SaveEncrypted(_vaultPath, new(), MasterPassword!);
+
         IsOpen = true;
-        ReadData();
+        return true;
     }
 
     /// <summary>
     /// Open an existing vault
     /// </summary>
-    public void Open(string vaultPath)
+    public bool Open(string vaultPath)
     {
         if (IsOpen)
         {
-            LogMessageEvent?.Invoke("A vault is currently open, please close it before creating a new one.");
-            return;
+            LogError?.Invoke("A vault is currently open, please close it before creating a new one.");
+            return false;
         }
 
-        if (!IsPathValid(vaultPath))
-            return;
+        if (!IsPathValid(vaultPath, out _vaultPath))
+            return false;
 
-        _vaultPath = vaultPath;
+        if (!ReadData())
+            return false;
+
         IsOpen = true;
-        ReadData();
+        return true;
     }
 
     /// <summary>
     /// Save the vault data to the file
     /// </summary>
-    public void Save()
+    public bool Save()
     {
         if (!IsOpen)
         {
-            LogMessageEvent?.Invoke("No vault is currently open.");
-            return;
+            LogError?.Invoke("No vault is currently open.");
+            return false;
         }
 
         if (VaultData is null)
         {
-            LogMessageEvent?.Invoke("No vault data to save.");
-            return;
+            LogError?.Invoke("No vault data to save.");
+            return false;
         }
 
         if (string.IsNullOrEmpty(MasterPassword))
         {
-            LogMessageEvent?.Invoke("No master password set.");
-            return;
+            LogError?.Invoke("No master password set.");
+            return false;
         }
 
         if (string.IsNullOrEmpty(_vaultPath))
         {
-            LogMessageEvent?.Invoke("No vault path set.");
-            return;
+            LogError?.Invoke("No vault path set.");
+            return false;
         }
 
         VaultCrypto.SaveEncrypted(_vaultPath, VaultData, MasterPassword);
-        ReadData();
+        return ReadData();
     }
 
     #region [ Util ]
-    private void ReadData()
+    private bool TryCreateFile(string path)
+    {
+        try
+        {
+            if (File.Exists(_vaultPath))
+            {
+                LogError?.Invoke($"A vault already exists at {_vaultPath}.");
+                return false;
+            }
+
+            using var _ = File.Create(path);
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogError?.Invoke($"Unable to create file {path}: {e.Message}.");
+            return false;
+        }
+    }
+
+    private bool ReadData()
     {
         if (string.IsNullOrEmpty(MasterPassword))
         {
-            LogMessageEvent?.Invoke("No master password set.");
-            return;
+            LogError?.Invoke("No master password set.");
+            return false;
         }
 
         if (string.IsNullOrEmpty(_vaultPath))
         {
-            LogMessageEvent?.Invoke("No vault path set.");
-            return;
+            LogError?.Invoke("No vault path set.");
+            return false;
         }
 
         VaultData = VaultCrypto.LoadDecrypted(_vaultPath, MasterPassword);
 
         if (VaultData is null)
         {
-            LogMessageEvent?.Invoke("No vault data found.");
+            LogError?.Invoke("No vault data found.");
             VaultData = new();
-            return;
+            return false;
         }
+
+        return true;
     }
 
-    private bool IsPathValid(string path)
+    private bool IsPathValid(string vaultPath, out string fullPath)
     {
-        if (!Directory.Exists(path))
+        fullPath = string.Empty;
+
+        // Expand ~
+        if (vaultPath.StartsWith('~'))
         {
-            LogMessageEvent?.Invoke($"Unable to find directory {path}.");
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            vaultPath = Path.Combine(home, vaultPath.TrimStart('~').TrimStart(Path.DirectorySeparatorChar));
+        }
+
+        // Normalize
+        var path = Path.GetFullPath(vaultPath);
+        var directory = Path.GetDirectoryName(path);
+
+        if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory))
+        {
+            LogError?.Invoke($"Unable to find directory {directory}.");
             return false;
         }
 
         var fileName = Path.GetFileName(path);
-        if (File.Exists(fileName))
-        {
-            LogMessageEvent?.Invoke($"A vault already exists at {path}.");
-            return false;
-        }
-
         if (!fileName.EndsWith(".lv"))
         {
-            LogMessageEvent?.Invoke($"Your vault file should have a .lv extension.");
+            LogError?.Invoke("Your vault file should have a .lv extension.");
             return false;
         }
 
+        fullPath = path;
         return true;
     }
     #endregion

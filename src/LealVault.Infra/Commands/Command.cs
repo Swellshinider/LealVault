@@ -8,16 +8,16 @@ internal sealed class Command
     private readonly Func<string?, ExecutionResult> _action;
 
     public delegate bool Validator(string? input, out string message);
-    private readonly Validator? _validator;
+    private readonly List<Validator> _validators;
 
     /// <summary>
     /// Constructs a new instance of the <see cref="Command"/> class.
     /// </summary>
-    public Command(CommandType commandType, Func<string?, ExecutionResult> action, Validator? validator = null)
+    public Command(CommandType commandType, Func<string?, ExecutionResult> action, List<Validator>? validators = null)
     {
         Type = commandType;
         _action = action;
-        _validator = validator;
+        _validators = validators ?? [];
     }
 
     /// <summary>
@@ -46,8 +46,11 @@ internal sealed class Command
     /// </returns>
     public ExecutionResult Execute(string? args)
     {
-        if (_validator is not null && !_validator(args, out var message))
-            return ExecutionResult.FailValidation(message);
+        foreach (var validator in _validators)
+        {
+            if (!validator(args, out var message))
+                return ExecutionResult.FailValidation(message);
+        }
 
         return _action(args);
     }
