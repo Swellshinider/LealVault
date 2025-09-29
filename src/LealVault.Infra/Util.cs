@@ -45,11 +45,45 @@ public static class Util
     }
 
     /// <summary>
+    /// Read not empty text from console
+    /// </summary>
+    public static string? ReadNotEmptyText(string text, bool canBeEmpty = false)
+    {
+        $"{text}: ".Write();
+        var input = (Console.ReadLine() ?? "").Trim();
+
+        if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+        {
+            if (canBeEmpty)
+                return null;
+
+            "{text} cannot be empty.".WriteLine(ConsoleColor.Yellow);
+            return ReadNotEmptyText(text);
+        }
+
+        return input;
+    }
+
+    /// <summary>
+    /// Confirm user action
+    /// </summary>
+    public static bool ConfirmUserAction(string message = "Are you sure you want to continue?")
+    {
+        $"{message} [Y/n]: ".Write();
+        var input = (Console.ReadLine() ?? "").Trim().ToLower();
+
+        if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+            return true;
+
+        return input == "y";
+    }
+
+    /// <summary>
     /// Convert command type to friendly name
     /// </summary>
     internal static string ToFriendlyName(this CommandType type)
         => (Enum.GetName(type.GetType(), type) ?? "").ToLower();
-    
+
     /// <summary>
     /// Write text to console
     /// </summary>

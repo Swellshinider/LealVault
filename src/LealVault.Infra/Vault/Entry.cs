@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Text;
 using LealVault.Infra.Security;
 
 namespace LealVault.Infra.Vault;
@@ -21,6 +23,11 @@ public sealed record Entry
     public required string Name { get; set; }
 
     /// <summary>
+    /// Entry tag
+    /// </summary>
+    public required string Tag { get; set; }
+
+    /// <summary>
     /// Entry password
     /// </summary>
     public string Password
@@ -36,7 +43,7 @@ public sealed record Entry
     /// <summary>
     /// Password strength
     /// </summary>
-    public PasswordEvaluation? PasswordEvaluation { get; private set; }   
+    public PasswordEvaluation? PasswordEvaluation { get; private set; }
 
     /// <summary>
     /// Entry email
@@ -57,4 +64,58 @@ public sealed record Entry
     /// Last modification date
     /// </summary>
     public required long Modified { get; set; }
+
+    /// <inheritdoc/>
+    public override string ToString() => $"{Id} | (Tag: {Tag}) - {Name}";
+
+    /// <summary>
+    /// Print all informations about this entry
+    /// </summary>
+    public void PrintAll()
+    {
+        $"Entry {Id}:".WriteLine(ConsoleColor.Green);
+        PrintProperty(nameof(Name), Name);
+        PrintProperty(nameof(Email), Email);
+        PrintProperty(nameof(Password), Password);
+        PrintProperty(nameof(Tag), Tag);
+        PrintProperty(nameof(Notes), Notes);
+        PrintProperty(nameof(Created), new DateTime(Created).ToString("dd/MM/yyyy - HH:mm:ss"));
+        PrintProperty(nameof(Modified), new DateTime(Modified).ToString("dd/MM/yyyy - HH:mm:ss"));
+        $"Password Evalution: {PasswordEvaluation?.Category.ToString() ?? "Unknown"}".WriteLine();
+    }
+
+    /// <summary>
+    /// Compares two entries and returns a string with the differences
+    /// </summary>
+    public void PrintDiff(Entry updatedEntry)
+    {
+        if (Name != updatedEntry.Name)
+            PrintFormatted("Name", Name, updatedEntry.Name);
+
+        if (Email != updatedEntry.Email)
+            PrintFormatted("Email", Email, updatedEntry.Email);
+
+        if (Password != updatedEntry.Password)
+            PrintFormatted("Password", Password, updatedEntry.Password);
+
+        if (Tag != updatedEntry.Tag)
+            PrintFormatted("Tag", Tag, updatedEntry.Tag);
+
+        if (Notes != updatedEntry.Notes)
+            PrintFormatted("Notes", Notes, updatedEntry.Notes);
+    }
+
+    private static void PrintProperty(string propertyName, object? propertyValue)
+    {
+        $"    {propertyName}".Write();
+        $": {propertyValue ?? "<empty>"}".WriteLine(ConsoleColor.Cyan);
+    }
+
+    private static void PrintFormatted(string property, string? before, string? after)
+    {
+        $"    {property}".Write();
+        $": {before ?? "<empty>"}".Write(ConsoleColor.Yellow);
+        " -> ".Write();
+        $"{after ?? "<empty>"}".WriteLine(ConsoleColor.Green);
+    }
 }
