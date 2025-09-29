@@ -21,6 +21,11 @@ public sealed record Entry
     public required string Name { get; set; }
 
     /// <summary>
+    /// Entry tag
+    /// </summary>
+    public required string Tag { get; set; }
+
+    /// <summary>
     /// Entry password
     /// </summary>
     public string Password
@@ -36,7 +41,7 @@ public sealed record Entry
     /// <summary>
     /// Password strength
     /// </summary>
-    public PasswordEvaluation? PasswordEvaluation { get; private set; }   
+    public PasswordEvaluation? PasswordEvaluation { get; private set; }
 
     /// <summary>
     /// Entry email
@@ -57,4 +62,7 @@ public sealed record Entry
     /// Last modification date
     /// </summary>
     public required long Modified { get; set; }
+
+    /// <inheritdoc/>
+    public override string ToString() => $"{Id} | (Tag: {Tag}) - {Name}";
 }

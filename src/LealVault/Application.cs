@@ -13,7 +13,8 @@ public static class Application
     {
         "Welcome to LealVault CLI!\nType ".Write();
         "help ".Write(ConsoleColor.Green);
-        "to see available commands.\n".WriteLine(ConsoleColor.Green);
+        "to see available commands.\n".WriteLine();
+        "You can press Ctrl + C anytime to exit.\n".WriteLine();
 
         while (true)
         {
@@ -26,7 +27,7 @@ public static class Application
 
             var executionResult = CommandHandler.Execute(input);
             executionResult.Message?.WriteLine(executionResult.Success ? ConsoleColor.Green : ConsoleColor.Red);
-            
+
             if (executionResult.ShouldExit)
             {
                 "Exiting...".WriteLine();

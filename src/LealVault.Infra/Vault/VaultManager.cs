@@ -25,6 +25,11 @@ public sealed class VaultManager
     public bool IsOpen { get; private set; } = false;
 
     /// <summary>
+    /// If the vault is dirty
+    /// </summary>
+    public bool IsDirty { get; private set; } = false;
+
+    /// <summary>
     /// The master password
     /// </summary>
     public string? MasterPassword { get; set; }
@@ -108,8 +113,54 @@ public sealed class VaultManager
         }
 
         VaultCrypto.SaveEncrypted(_vaultPath, VaultData, MasterPassword);
-        return ReadData();
+        return true;
     }
+
+    /// <summary>
+    /// Close the vault
+    /// </summary>
+    public void Close()
+    {
+        VaultData = null;
+        IsOpen = false;
+        IsDirty = false;
+        _vaultPath = null;
+    }
+
+    /// <summary>
+    /// Add an entry to the vault
+    /// </summary>
+    public bool Add(Entry entry)
+    {
+        if (!IsOpen)
+        {
+            LogError?.Invoke("No vault is currently open.");
+            return false;
+        }
+
+        VaultData!.Entries.Add(entry);
+        IsDirty = true;
+        return true;
+    }
+
+    /// <summary>
+    /// Remove an entry from the vault
+    /// </summary>
+    public bool Remove(Entry entry)
+    {
+        if (!IsOpen)
+        {
+            LogError?.Invoke("No vault is currently open.");
+            return false;
+        }
+
+        VaultData!.Entries.Remove(entry);
+        IsDirty = true;
+        return true;
+    }
+    #region 
+
+    #endregion
 
     #region [ Util ]
     private bool TryCreateFile(string path)
@@ -189,5 +240,6 @@ public sealed class VaultManager
         fullPath = path;
         return true;
     }
+
     #endregion
 }
