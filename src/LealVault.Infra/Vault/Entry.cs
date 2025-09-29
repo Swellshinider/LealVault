@@ -76,6 +76,7 @@ public sealed record Entry
         $"Entry {Id}:".WriteLine(ConsoleColor.Green);
         PrintProperty(nameof(Name), Name);
         PrintProperty(nameof(Email), Email);
+        PrintProperty(nameof(Password), Password);
         PrintProperty(nameof(Tag), Tag);
         PrintProperty(nameof(Notes), Notes);
         PrintProperty(nameof(Created), new DateTime(Created).ToString("dd/MM/yyyy - HH:mm:ss"));
