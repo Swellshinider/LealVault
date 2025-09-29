@@ -24,7 +24,8 @@ public static class CommandHandler
         { "add", CommandType.Add },
         { "remove", CommandType.Remove },
         { "update", CommandType.Update },
-        { "copy", CommandType.Copy }
+        { "copy", CommandType.Copy },
+        { "display", CommandType.Display }
     };
 
     static CommandHandler()
@@ -97,11 +98,16 @@ public static class CommandHandler
             },
             new(CommandType.Copy, CopyEntry, [VaultShouldBeOpen, ArgumentCantBeNull])
             {
-                Description = "",
+                Description = "Copy an entry data to the clipboard.",
                 Usage = "copy <id> <type> | Copies the specified entry to the clipboard.\n" +
                 "You have this options for <type>:\n" +
                 "p - copy the password\n" +
                 "e - copy the email\n"
+            },
+            new(CommandType.Display, DisplayEntry, [VaultShouldBeOpen, ArgumentCantBeNull])
+            {
+                Description = "Display all data of an entry.",
+                Usage = "display <id> | Displays all data of the specified entry."
             }
         ];
     }
@@ -502,6 +508,25 @@ public static class CommandHandler
                 return new ExecutionResult(false, "Invalid type. You should provide p or e.");
 
             return new ExecutionResult(true, "Copied to clipboard.");
+        }
+        catch (Exception e)
+        {
+            return new ExecutionResult(false, e.Message);
+        }
+    }
+
+    private static ExecutionResult DisplayEntry(string? arg)
+    {
+        try
+        {
+            var entry = _vaultManager.VaultData!.Entries.FirstOrDefault(e => e.Id == arg!);
+
+            if (entry is null)
+                return new ExecutionResult(false, "Entry not found.");
+
+            entry.PrintAll();
+
+            return ExecutionResult.SuccessNoMessage();   
         }
         catch (Exception e)
         {

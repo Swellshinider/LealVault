@@ -14,4 +14,5 @@ internal enum CommandType
     Copy,
     Remove,
     Update,
+    Display,
 }

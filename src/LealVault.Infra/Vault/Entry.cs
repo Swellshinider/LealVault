@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using LealVault.Infra.Security;
 
@@ -68,6 +69,21 @@ public sealed record Entry
     public override string ToString() => $"{Id} | (Tag: {Tag}) - {Name}";
 
     /// <summary>
+    /// Print all informations about this entry
+    /// </summary>
+    public void PrintAll()
+    {
+        $"Entry {Id}:".WriteLine(ConsoleColor.Green);
+        PrintProperty(nameof(Name), Name);
+        PrintProperty(nameof(Email), Email);
+        PrintProperty(nameof(Tag), Tag);
+        PrintProperty(nameof(Notes), Notes);
+        PrintProperty(nameof(Created), new DateTime(Created).ToString("dd/MM/yyyy - HH:mm:ss"));
+        PrintProperty(nameof(Modified), new DateTime(Modified).ToString("dd/MM/yyyy - HH:mm:ss"));
+        $"Password Evalution: {PasswordEvaluation?.Category.ToString() ?? "Unknown"}".WriteLine();
+    }
+
+    /// <summary>
     /// Compares two entries and returns a string with the differences
     /// </summary>
     public void PrintDiff(Entry updatedEntry)
@@ -86,6 +102,12 @@ public sealed record Entry
 
         if (Notes != updatedEntry.Notes)
             PrintFormatted("Notes", Notes, updatedEntry.Notes);
+    }
+
+    private static void PrintProperty(string propertyName, object? propertyValue)
+    {
+        $"    {propertyName}".Write();
+        $": {propertyValue ?? "<empty>"}".WriteLine(ConsoleColor.Cyan);
     }
 
     private static void PrintFormatted(string property, string? before, string? after)
