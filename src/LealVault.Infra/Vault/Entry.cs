@@ -1,3 +1,4 @@
+using System.Text;
 using LealVault.Infra.Security;
 
 namespace LealVault.Infra.Vault;
@@ -65,4 +66,33 @@ public sealed record Entry
 
     /// <inheritdoc/>
     public override string ToString() => $"{Id} | (Tag: {Tag}) - {Name}";
+
+    /// <summary>
+    /// Compares two entries and returns a string with the differences
+    /// </summary>
+    public void PrintDiff(Entry updatedEntry)
+    {
+        if (Name != updatedEntry.Name)
+            PrintFormatted("Name", Name, updatedEntry.Name);
+
+        if (Email != updatedEntry.Email)
+            PrintFormatted("Email", Email, updatedEntry.Email);
+
+        if (Password != updatedEntry.Password)
+            PrintFormatted("Password", Password, updatedEntry.Password);
+
+        if (Tag != updatedEntry.Tag)
+            PrintFormatted("Tag", Tag, updatedEntry.Tag);
+
+        if (Notes != updatedEntry.Notes)
+            PrintFormatted("Notes", Notes, updatedEntry.Notes);
+    }
+
+    private static void PrintFormatted(string property, string? before, string? after)
+    {
+        $"    {property}".Write();
+        $": {before ?? "<empty>"}".Write(ConsoleColor.Yellow);
+        " -> ".Write();
+        $"{after ?? "<empty>"}".WriteLine(ConsoleColor.Green);
+    }
 }

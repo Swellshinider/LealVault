@@ -1,5 +1,6 @@
 using LealVault.Infra.Security;
 using LealVault.Infra.Vault;
+using TextCopy;
 
 namespace LealVault.Infra.Commands;
 
@@ -364,7 +365,7 @@ public static class CommandHandler
             "Please enter the following informations:".WriteLine();
 
             var name = AskUntilUnique("Entry name", (e, r) => r is not null && e.Name.Equals(r, StringComparison.OrdinalIgnoreCase))!;
-            var email = Util.ReadNotEmptyText("Email")!;
+            var email = Util.ReadNotEmptyText("Email", true);
             var password = Util.ReadNotEmptyText("Password")!;
             var tag = Util.ReadNotEmptyText("Tag")!;
 
@@ -452,11 +453,9 @@ public static class CommandHandler
                 Modified = DateTime.Now.Ticks,
             };
 
-            "\nFrom:".WriteLine();
-            $"    {entry}, {entry.Email}, {entry.Password}, {entry.Notes}".WriteLine(ConsoleColor.Yellow);
-            "To:".WriteLine();
-            $"    {updatedEntry}, {updatedEntry.Email}, {updatedEntry.Password}, {updatedEntry.Notes}\n".WriteLine(ConsoleColor.Green);
-
+            "\nVerifying changes...".WriteLine();
+            entry.PrintDiff(updatedEntry);
+            
             if (!Util.ConfirmUserAction("Are you sure you want to update this entry?"))
                 return new ExecutionResult(false, "Entry update canceled.");
 
@@ -480,7 +479,34 @@ public static class CommandHandler
 
     private static ExecutionResult CopyEntry(string? arg)
     {
-        throw new NotImplementedException();
+        try
+        {   
+            var split = arg!.Split(' ', StringSplitOptions.None);
+
+            if (split.Length != 2)
+                return new ExecutionResult(false, "Invalid arguments. You should provide <id> and <type> only.");
+
+            var id = split[0].Trim().ToLower();
+            var type = split[1].Trim().ToLower();
+
+            var entry = _vaultManager.VaultData!.Entries.FirstOrDefault(e => e.Id == id);
+
+            if (entry is null)
+                return new ExecutionResult(false, "Entry not found.");
+
+            if (type == "p")
+                ClipboardService.SetText(entry.Password);
+            else if (type == "e")
+                ClipboardService.SetText(entry.Email ?? "");
+            else
+                return new ExecutionResult(false, "Invalid type. You should provide p or e.");
+
+            return new ExecutionResult(true, "Copied to clipboard.");
+        }
+        catch (Exception e)
+        {
+            return new ExecutionResult(false, e.Message);
+        }
     }
 
     #region [ Util ]
