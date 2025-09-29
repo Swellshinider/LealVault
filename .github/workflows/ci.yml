@@ -7,8 +7,11 @@ concurrency:
 on:
   push:
     branches: [ 'main', '**feature/**', '**hotfix/**', '**release/**', '**/bugfix/**' ]
+    paths: [ 'src/**' ]
+    
   pull_request:
     branches: [ main, '**feature/**', '**hotfix/**', '**release/**', '**/bugfix/**']
+    paths: [ 'src/**' ]
 
 jobs:
   build:
