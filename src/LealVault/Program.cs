@@ -1,12 +1,17 @@
-﻿namespace LealVault;
+﻿using LealVault.Infra;
+
+namespace LealVault;
 
 public static class Program
 {
-    public static async Task<int> Main()
+    /// <summary>
+    /// The entry point of the application.
+    /// </summary>
+    public static int Main()
     {
         try
         {
-            await Application.RunAsync();
+            Application.Run();
             return 0;
         }
         catch (Exception ex)
