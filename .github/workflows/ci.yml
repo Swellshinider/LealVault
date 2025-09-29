@@ -7,11 +7,9 @@ concurrency:
 on:
   push:
     branches: [ 'main', '**feature/**', '**hotfix/**', '**release/**', '**/bugfix/**' ]
-    paths: [ 'src/**' ]
     
   pull_request:
     branches: [ main, '**feature/**', '**hotfix/**', '**release/**', '**/bugfix/**']
-    paths: [ 'src/**' ]
 
 jobs:
   build:
@@ -27,10 +25,13 @@ jobs:
         dotnet-version: '8.0'
 
     - name: Restore dependencies
+      working-directory: src/
       run: dotnet restore
 
     - name: Build
+      working-directory: src/
       run: dotnet build --configuration Release --no-restore
 
     - name: Test
+      working-directory: src/
       run: dotnet test --no-build --verbosity normal
