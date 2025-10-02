@@ -123,7 +123,7 @@ public static class CommandHandler
     /// </summary>
     public static ExecutionResult Execute(string input)
     {
-        var parts = input.Split(' ', StringSplitOptions.TrimEntries);
+        var parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         var inputCommand = parts[0];
         var arguments = parts.Length <= 1
                             ? null
@@ -209,7 +209,7 @@ public static class CommandHandler
 
     private static ExecutionResult Exit(string? arg)
     {
-        var closeResult = CloseVault(arg);
+        var closeResult = _vaultManager.IsOpen ? CloseVault(arg) : ExecutionResult.SuccessNoMessage();
 
         if (!closeResult.Success)
         {
@@ -338,10 +338,17 @@ public static class CommandHandler
             if (arg.IsNull()) // Searches all entries
             {
                 "Entries: ".WriteLine();
-
+                int colorRand = 1;
                 foreach (var entry in entries)
-                    $"{entry}".WriteLine();
+                {
+                    colorRand++;
+                    if (colorRand > 14)
+                        colorRand = 1;
 
+                    $"    {entry}".WriteLine((ConsoleColor)colorRand);
+                }
+                "".WriteLine();
+                
                 return new ExecutionResult(true, "Search finished.");
             }
 

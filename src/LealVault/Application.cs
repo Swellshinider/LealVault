@@ -1,6 +1,6 @@
 using LealVault.Infra;
 using LealVault.Infra.Commands;
-using LealVault.Infra.Vault;
+using LealVault.Infra.Repl;
 
 namespace LealVault;
 
@@ -16,22 +16,20 @@ public static class Application
         "to see available commands.\n".WriteLine();
         "You can press Ctrl + C anytime to exit.\n".WriteLine();
 
+        var repl = new Repl();
+
         while (true)
         {
-            "> ".Write(ConsoleColor.Cyan);
-            var input = (Console.ReadLine() ?? "").Trim();
-
-            if (string.IsNullOrEmpty(input) ||
-                string.IsNullOrWhiteSpace(input))
-                continue;
-
+            var input = repl.Run();
             var executionResult = CommandHandler.Execute(input);
-            executionResult.Message?.WriteLine(executionResult.Success ? ConsoleColor.Green : ConsoleColor.Red);
 
+            $"{executionResult.Message}".WriteLine(executionResult.Success
+                                                                ? ConsoleColor.Green 
+                                                                : ConsoleColor.Red);
             if (executionResult.ShouldExit)
             {
-                "Exiting...".WriteLine();
-                return;
+                "Exiting...\n".WriteLine();
+                break;
             }
         }
     }
