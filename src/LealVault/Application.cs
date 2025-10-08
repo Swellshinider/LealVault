@@ -14,21 +14,24 @@ public static class Application
         "Welcome to LealVault CLI!\nType ".Write();
         "help ".Write(ConsoleColor.Green);
         "to see available commands.\n".WriteLine();
-        "You can press Ctrl + C anytime to exit.\n".WriteLine();
 
         var repl = new Repl();
+        ExecutionResult? lastResult = null;
 
         while (true)
         {
-            var input = repl.Run();
-            var executionResult = CommandHandler.Execute(input);
+            var input = repl.Run(lastResult);
+            lastResult = CommandHandler.Execute(input);
 
-            $"{executionResult.Message}".WriteLine(executionResult.Success
-                                                                ? ConsoleColor.Green 
-                                                                : ConsoleColor.Red);
-            if (executionResult.ShouldExit)
+            if (!lastResult.Message.IsNull())
             {
-                "Exiting...\n".WriteLine();
+                var color = lastResult.Success ? ConsoleColor.Green : ConsoleColor.Red;
+                lastResult.Message.WriteLine(color);
+            }
+
+            if (lastResult.ShouldExit)
+            {
+                "Exiting...".WriteLine();
                 break;
             }
         }

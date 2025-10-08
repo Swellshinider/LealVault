@@ -40,11 +40,14 @@ namespace LealVault.Infra.Repl
         /// <summary>
         /// Runs the REPL loop once and returns the entered line (does not loop forever).
         /// </summary>
-        public string Run()
+        public string Run(ExecutionResult? lastExecutionResult)
         {
             _historyIndex = _history.Count;
             _input = new StringBuilder();
             _cursor = 0;
+
+            if (lastExecutionResult is not null && lastExecutionResult.VaultIsOpen)
+                $" {lastExecutionResult.VaultPath}".Write();
 
             Prompt.Write(ConsoleColor.Cyan);
 

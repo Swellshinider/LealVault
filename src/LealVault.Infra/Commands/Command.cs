@@ -41,17 +41,21 @@ internal sealed class Command
     /// <param name="args">
     /// The arguments of the command.
     /// </param>
+    /// <param name="message">
+    /// The message of validation result.
+    /// </param>
     /// <returns>
     /// True if the command was executed successfully, false otherwise.
     /// </returns>
-    public ExecutionResult Execute(string? args)
+    public ExecutionResult? Execute(string? args, out string message)
     {
         foreach (var validator in _validators)
         {
-            if (!validator(args, out var message))
-                return ExecutionResult.FailValidation(message);
+            if (!validator(args, out message))
+                return null;
         }
 
+        message = "";
         return _action(args);
     }
 }

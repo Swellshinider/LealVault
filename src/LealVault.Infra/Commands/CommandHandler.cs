@@ -99,10 +99,10 @@ public static class CommandHandler
             new(CommandType.Copy, CopyEntry, [VaultShouldBeOpen, ArgumentCantBeNull])
             {
                 Description = "Copy an entry data to the clipboard.",
-                Usage = "copy <id> <type> | Copies the specified entry to the clipboard.\n" +
+                Usage = "copy <id> <type> | Copies the specified entry data to the clipboard.\n\n" +
                 "You have this options for <type>:\n" +
-                "p - copy the password\n" +
-                "e - copy the email\n"
+                "    p - copy the password\n" +
+                "    e - copy the email\n"
             },
             new(CommandType.Display, DisplayEntry, [VaultShouldBeOpen, ArgumentCantBeNull])
             {
@@ -130,14 +130,19 @@ public static class CommandHandler
                             : string.Join(' ', parts.Skip(1));
 
         if (!_commandMap.TryGetValue(inputCommand, out var commandType))
-            return ExecutionResult.FailValidation($"Unknown command: {inputCommand}");
+            return ExecutionResult.Fail(_vaultManager, $"Unknown command: {inputCommand}");
 
         var command = GetCommand(commandType);
 
         if (command is null)
-            return ExecutionResult.FailValidation($"Unknown command: {inputCommand}");
+            return ExecutionResult.Fail(_vaultManager, $"Unknown command: {inputCommand}");
 
-        return command.Execute(arguments);
+        var execResult = command.Execute(arguments, out var validationMessage);
+
+        if (execResult is null)
+            return ExecutionResult.Fail(_vaultManager, validationMessage);
+
+        return execResult;
     }
 
     #region [ Validation Methods ]
@@ -145,7 +150,7 @@ public static class CommandHandler
     {
         if (_vaultManager.IsOpen)
         {
-            message = "Vault is open.";
+            message = "A vault is already open.";
             return false;
         }
 
@@ -157,7 +162,7 @@ public static class CommandHandler
     {
         if (!_vaultManager.IsOpen)
         {
-            message = "Vault is closed.";
+            message = "No vault is currently open.";
             return false;
         }
 
@@ -169,7 +174,7 @@ public static class CommandHandler
     {
         if (input.IsNull())
         {
-            message = "Argument cannot be null.";
+            message = "This command requires an argument, please see help <command> for more details.";
             return false;
         }
 
@@ -190,13 +195,13 @@ public static class CommandHandler
             "\nYou can type".Write();
             " help <command> ".Write(ConsoleColor.Green);
             "to get more details about a command.\n".WriteLine();
-            return ExecutionResult.SuccessNoMessage();
+            return ExecutionResult.SuccessResult(_vaultManager);
         }
 
         var command = GetCommand(arg!);
 
         if (command is null)
-            return ExecutionResult.FailValidation($"Unknown command: {arg}");
+            return ExecutionResult.Fail(_vaultManager, $"Unknown command: {arg}");
 
         "Help ".Write();
         $"{arg}:".WriteLine(ConsoleColor.Green);
@@ -204,12 +209,12 @@ public static class CommandHandler
         $"    {command.Usage}".WriteLine();
         "".WriteLine();
 
-        return ExecutionResult.SuccessNoMessage();
+        return ExecutionResult.SuccessResult(_vaultManager);
     }
 
     private static ExecutionResult Exit(string? arg)
     {
-        var closeResult = _vaultManager.IsOpen ? CloseVault(arg) : ExecutionResult.SuccessNoMessage();
+        var closeResult = _vaultManager.IsOpen ? CloseVault(arg) : ExecutionResult.SuccessResult(_vaultManager);
 
         if (!closeResult.Success)
         {
@@ -218,13 +223,13 @@ public static class CommandHandler
                 return Exit(arg);
         }
 
-        return ExecutionResult.Exit();
+        return ExecutionResult.Exit(_vaultManager);
     }
 
     private static ExecutionResult Clear(string? arg)
     {
         Console.Clear();
-        return ExecutionResult.SuccessNoMessage();
+        return ExecutionResult.SuccessResult(_vaultManager);
     }
 
     private static ExecutionResult CreateVault(string? arg)
@@ -238,24 +243,26 @@ public static class CommandHandler
             var confirmMasterPassword = Util.ReadPassword();
 
             if (masterPassword != confirmMasterPassword)
-                return new ExecutionResult(false, "Passwords do not match.");
+                return ExecutionResult.Fail(_vaultManager, "Passwords do not match.");
 
             "You'll not be able to change it later.".WriteLine(ConsoleColor.Yellow);
             "If you forgot your master password, you'll have to create a new vault.".WriteLine(ConsoleColor.Yellow);
 
             if (!Util.ConfirmUserAction())
-                return new ExecutionResult(false, "Vault creation canceled.");
+                return ExecutionResult.Fail(_vaultManager, "Vault creation canceled.");
 
             _vaultManager.MasterPassword = masterPassword;
 
             var success = _vaultManager.Create(arg!);
-            return new ExecutionResult(success, success
-                                                ? "Vault creation finished."
-                                                : "Vault could not be created.");
+
+            if (!success)
+                return ExecutionResult.Fail(_vaultManager, "Vault could not be created.");
+       
+            return ExecutionResult.Fail(_vaultManager, "Vault creation finished.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -268,13 +275,15 @@ public static class CommandHandler
             _vaultManager.MasterPassword = masterPassword;
 
             var success = _vaultManager.Open(arg!);
-            return new ExecutionResult(success, success
-                                                ? "Vault opened successfully."
-                                                : "Vault could not be opened.");
+
+            if (!success)
+                return ExecutionResult.Fail(_vaultManager, "Vault could not be opened.");
+
+            return ExecutionResult.SuccessResult(_vaultManager, "Vault opened successfully.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -285,16 +294,18 @@ public static class CommandHandler
             "Saving vault...".WriteLine();
 
             if (!Util.ConfirmUserAction())
-                return new ExecutionResult(false, "Vault saving canceled.");
+                return ExecutionResult.Fail(_vaultManager, "Vault saving canceled.");
 
             var success = _vaultManager.Save();
-            return new ExecutionResult(success, success
-                                                ? "Vault saved successfully."
-                                                : "Vault could not be saved.");
+
+            if (!success)
+                return ExecutionResult.Fail(_vaultManager, "Vault could not be saved.");
+
+            return ExecutionResult.SuccessResult(_vaultManager, "Vault saved successfully.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -311,18 +322,18 @@ public static class CommandHandler
                 {
                     var success = _vaultManager.Save();
                     if (!success)
-                        return new ExecutionResult(false, "Vault could not be saved.");
+                        return ExecutionResult.Fail(_vaultManager, "Vault could not be saved.");
                 }
                 else
                     "Vault will not be saved.".WriteLine(ConsoleColor.Yellow);
             }
 
             _vaultManager.Close();
-            return new ExecutionResult(true, "Vault closed successfully.");
+            return ExecutionResult.SuccessResult(_vaultManager, "Vault closed successfully.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -333,7 +344,7 @@ public static class CommandHandler
             var entries = _vaultManager.VaultData!.Entries;
 
             if (entries.Count == 0)
-                return new ExecutionResult(true, "You have no entries in your vault.");
+                return ExecutionResult.SuccessResult(_vaultManager, "You have no entries in your vault.");
 
             if (arg.IsNull()) // Searches all entries
             {
@@ -348,25 +359,26 @@ public static class CommandHandler
                     $"    {entry}".WriteLine((ConsoleColor)colorRand);
                 }
                 "".WriteLine();
-                
-                return new ExecutionResult(true, "Search finished.");
+
+                return ExecutionResult.SuccessResult(_vaultManager, "Search finished.");
             }
 
-            $"Entries to match {arg!}: ".WriteLine();
+            $"Searcing for: ".Write();
+            $"{arg!}".WriteLine(ConsoleColor.Green);
             var search = entries.Where(e => e.Name.Contains(arg!, StringComparison.InvariantCultureIgnoreCase) ||
                                              e.Tag.Contains(arg!, StringComparison.InvariantCultureIgnoreCase));
 
             if (search is null || search?.Count() == 0)
-                return new ExecutionResult(true, "No entries found.");
+                return ExecutionResult.SuccessResult(_vaultManager, "No entries found.");
 
             foreach (var entry in search!)
                 $"{entry}".WriteLine();
 
-            return new ExecutionResult(true, "Search finished.");
+            return ExecutionResult.SuccessResult(_vaultManager, $"Search finished, {search.Count()} entries found.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -397,13 +409,15 @@ public static class CommandHandler
             };
 
             var success = _vaultManager.Add(entry);
-            return new ExecutionResult(success, success
-                                                ? "Entry added successfully."
-                                                : "Entry could not be added.");
+
+            if (!success)
+                return ExecutionResult.Fail(_vaultManager, "Entry could not be added.");
+
+            return ExecutionResult.SuccessResult(_vaultManager, "Entry added successfully.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -414,22 +428,24 @@ public static class CommandHandler
             var entry = _vaultManager.VaultData!.Entries.FirstOrDefault(e => e.Id == arg!);
 
             if (entry is null)
-                return new ExecutionResult(false, "Entry not found.");
+                return ExecutionResult.Fail(_vaultManager, "Entry not found.");
 
             "Entry found!".WriteLine();
             entry.ToString().WriteLine(ConsoleColor.Green);
 
             if (!Util.ConfirmUserAction("Are you sure you want to remove this entry?"))
-                return new ExecutionResult(false, "Entry removal canceled.");
+                return ExecutionResult.Fail(_vaultManager, "Entry removal canceled.");
 
             var success = _vaultManager.Remove(entry);
-            return new ExecutionResult(success, success
-                                                ? "Entry removed successfully."
-                                                : "Entry could not be removed.");
+
+            if (!success)
+                return ExecutionResult.Fail(_vaultManager, "Entry could not be removed.");
+
+            return ExecutionResult.SuccessResult(_vaultManager, "Entry removed successfully.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -440,7 +456,7 @@ public static class CommandHandler
             var entry = _vaultManager.VaultData!.Entries.FirstOrDefault(e => e.Id == arg!);
 
             if (entry is null)
-                return new ExecutionResult(false, "Entry not found.");
+                return ExecutionResult.Fail(_vaultManager, "Entry not found.");
 
             "Entry found!".WriteLine();
             entry.ToString().WriteLine(ConsoleColor.Green);
@@ -468,36 +484,36 @@ public static class CommandHandler
 
             "\nVerifying changes...".WriteLine();
             entry.PrintDiff(updatedEntry);
-            
+
             if (!Util.ConfirmUserAction("Are you sure you want to update this entry?"))
-                return new ExecutionResult(false, "Entry update canceled.");
+                return ExecutionResult.Fail(_vaultManager, "Entry update canceled.");
 
             var removeOldResult = _vaultManager.Remove(entry);
 
             if (!removeOldResult)
-                return new ExecutionResult(false, "Old entry could not be removed.");
+                return ExecutionResult.Fail(_vaultManager, "Old entry could not be removed.");
 
             var addResult = _vaultManager.Add(updatedEntry);
 
             if (!addResult)
-                return new ExecutionResult(false, "New entry could not be added.");
+                return ExecutionResult.Fail(_vaultManager, "New entry could not be added.");
 
-            return new ExecutionResult(true, "Entry updated successfully.");
+            return ExecutionResult.SuccessResult(_vaultManager, "Entry updated successfully.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
     private static ExecutionResult CopyEntry(string? arg)
     {
         try
-        {   
+        {
             var split = arg!.Split(' ', StringSplitOptions.None);
 
             if (split.Length != 2)
-                return new ExecutionResult(false, "Invalid arguments. You should provide <id> and <type> only.");
+                return ExecutionResult.Fail(_vaultManager, "Invalid arguments. You should provide <id> and <type> only.");
 
             var id = split[0].Trim().ToLower();
             var type = split[1].Trim().ToLower();
@@ -505,20 +521,25 @@ public static class CommandHandler
             var entry = _vaultManager.VaultData!.Entries.FirstOrDefault(e => e.Id == id);
 
             if (entry is null)
-                return new ExecutionResult(false, "Entry not found.");
+                return ExecutionResult.Fail(_vaultManager, $"Entry not found with id: {id}.");
 
             if (type == "p")
+            {
                 ClipboardService.SetText(entry.Password);
-            else if (type == "e")
-                ClipboardService.SetText(entry.Email ?? "");
-            else
-                return new ExecutionResult(false, "Invalid type. You should provide p or e.");
+                return ExecutionResult.SuccessResult(_vaultManager, "Password copied to clipboard.");
+            }
 
-            return new ExecutionResult(true, "Copied to clipboard.");
+            if (type == "e")
+            {
+                ClipboardService.SetText(entry.Email ?? "");
+                return ExecutionResult.SuccessResult(_vaultManager, "Email copied to clipboard.");
+            }
+
+            return ExecutionResult.Fail(_vaultManager, "Invalid type. You should provide p or e.");
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 
@@ -529,15 +550,15 @@ public static class CommandHandler
             var entry = _vaultManager.VaultData!.Entries.FirstOrDefault(e => e.Id == arg!);
 
             if (entry is null)
-                return new ExecutionResult(false, "Entry not found.");
+                return ExecutionResult.Fail(_vaultManager, "Entry not found.");
 
             entry.PrintAll();
 
-            return ExecutionResult.SuccessNoMessage();   
+            return ExecutionResult.SuccessResult(_vaultManager);
         }
         catch (Exception e)
         {
-            return new ExecutionResult(false, e.Message);
+            return ExecutionResult.Error(_vaultManager, e);
         }
     }
 

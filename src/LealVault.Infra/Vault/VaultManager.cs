@@ -30,6 +30,11 @@ public sealed class VaultManager
     public bool IsDirty { get; private set; } = false;
 
     /// <summary>
+    /// The vault path
+    /// </summary>
+    public string VaultPath => _vaultPath ?? "";
+
+    /// <summary>
     /// The master password
     /// </summary>
     public string? MasterPassword { get; set; }
