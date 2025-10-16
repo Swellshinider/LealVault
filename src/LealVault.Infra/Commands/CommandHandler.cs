@@ -32,13 +32,7 @@ public static class CommandHandler
     {
         _vaultManager = new();
         _vaultManager.LogError += (msg) => msg.WriteLine(ConsoleColor.Red);
-
-        Console.CancelKeyPress += (s, e) =>
-        {
-            e.Cancel = true;
-            Exit(null);
-        };
-
+        
         _commands =
         [
             new(CommandType.Help, DisplayHelp)
@@ -145,6 +139,11 @@ public static class CommandHandler
         return execResult;
     }
 
+    /// <summary>
+    /// Executes the exit command.
+    /// </summary>
+    public static ExecutionResult Exit() => Exit(null);
+
     #region [ Validation Methods ]
     private static bool VaultShouldBeClosed(string? input, out string message)
     {
@@ -183,6 +182,7 @@ public static class CommandHandler
     }
     #endregion
 
+    #region [ Commands ]
     private static ExecutionResult DisplayHelp(string? arg)
     {
         if (arg.IsNull())
@@ -561,6 +561,7 @@ public static class CommandHandler
             return ExecutionResult.Error(_vaultManager, e);
         }
     }
+    #endregion
 
     #region [ Util ]
     private static string? AskUntilUnique(string text, Func<Entry, string?, bool> condition, bool canBeEmpty = false)

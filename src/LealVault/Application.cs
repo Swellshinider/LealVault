@@ -9,31 +9,48 @@ public static class Application
     /// <summary>
     /// Runs the application.
     /// </summary>
-    public static void Run()
+    public static async void Run()
     {
         "Welcome to LealVault CLI!\nType ".Write();
         "help ".Write(ConsoleColor.Green);
         "to see available commands.\n".WriteLine();
 
-        var repl = new Repl();
+        var cancelationTokenSource = new CancellationTokenSource();
+        var repl = new Repl(cancelationTokenSource.Token);
         ExecutionResult? lastResult = null;
 
-        while (true)
+        Console.CancelKeyPress += (s, e) =>
         {
-            var input = repl.Run(lastResult);
-            lastResult = CommandHandler.Execute(input);
+            e.Cancel = true;
+            cancelationTokenSource.Cancel();
+        };
 
-            if (!lastResult.Message.IsNull())
-            {
-                var color = lastResult.Success ? ConsoleColor.Green : ConsoleColor.Red;
-                lastResult.Message.WriteLine(color);
-            }
+        while (!cancelationTokenSource.Token.IsCancellationRequested)
+        {
+            var input = await repl.Run(lastResult);
+            lastResult = cancelationTokenSource.Token.IsCancellationRequested
+                ? CommandHandler.Exit()
+                : CommandHandler.Execute(input);
 
-            if (lastResult.ShouldExit)
-            {
-                "Exiting...".WriteLine();
+            if (ProcessExecutionResult(lastResult))
                 break;
-            }
         }
+    }
+    
+    private static bool ProcessExecutionResult(ExecutionResult result)
+    {
+        if (!result.Message.IsNull())
+        {
+            var color = result.Success ? ConsoleColor.Green : ConsoleColor.Red;
+            result.Message.WriteLine(color);
+        }
+
+        if (result.ShouldExit)
+        {
+            "Exiting...".WriteLine();
+            return true;
+        }
+
+        return false;
     }
 }

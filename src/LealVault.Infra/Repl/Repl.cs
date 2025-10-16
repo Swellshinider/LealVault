@@ -1,4 +1,6 @@
 using System.Text;
+using System.Threading.Tasks;
+using TextCopy;
 
 namespace LealVault.Infra.Repl
 {
@@ -15,6 +17,7 @@ namespace LealVault.Infra.Repl
 
         private readonly List<string> _history;
         private readonly Dictionary<ConsoleKey, Func<ConsoleKeyInfo, ReplResult>> _inputKeyActions;
+        private readonly CancellationToken _token;
 
         private StringBuilder _input = new();
         private int _cursor; // insertion cursor within _input (0.._input.Length)
@@ -23,9 +26,10 @@ namespace LealVault.Infra.Repl
         /// <summary>
         /// Instantiates a new REPL.
         /// </summary>
-        public Repl()
+        public Repl(CancellationToken token)
         {
             _history = [];
+            _token = token;
             _inputKeyActions = new()
             {
                 { ConsoleKey.Backspace, HitBackspace },
@@ -34,26 +38,43 @@ namespace LealVault.Infra.Repl
                 { ConsoleKey.DownArrow, HitDown },
                 { ConsoleKey.LeftArrow, HitLeft },
                 { ConsoleKey.RightArrow, HitRight },
+                { ConsoleKey.V, HitV }
             };
         }
 
         /// <summary>
         /// Runs the REPL loop once and returns the entered line (does not loop forever).
         /// </summary>
-        public string Run(ExecutionResult? lastExecutionResult)
+        public async Task<string> Run(ExecutionResult? lastExecutionResult)
         {
             _historyIndex = _history.Count;
             _input = new StringBuilder();
             _cursor = 0;
 
             if (lastExecutionResult is not null && lastExecutionResult.VaultIsOpen)
-                $" {lastExecutionResult.VaultPath}".Write();
+            {
+                var fileName = Path.GetFileName(lastExecutionResult.VaultPath);
+                var dirtyMark = lastExecutionResult.VaultIsDirty ? "*" : "";
+                $"{fileName}{dirtyMark} ".Write(ConsoleColor.Gray);
+            }
 
             Prompt.Write(ConsoleColor.Cyan);
 
-            while (true)
+            while (!_token.IsCancellationRequested)
             {
-                var keyInfo = Console.ReadKey(intercept: true);
+                ConsoleKeyInfo keyInfo;
+
+                if (!Console.KeyAvailable)
+                    continue;
+
+                try
+                {
+                    keyInfo = Console.ReadKey(true);
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
 
                 if (!_inputKeyActions.TryGetValue(keyInfo.Key, out var action))
                 {
@@ -81,6 +102,8 @@ namespace LealVault.Infra.Repl
                     return line;
                 }
             }
+
+            return string.Empty;
         }
 
         #region [ Input Key Actions ]
@@ -88,9 +111,8 @@ namespace LealVault.Infra.Repl
         private ReplResult HitBackspace(ConsoleKeyInfo keyInfo)
         {
             if (_cursor > 0 && _input.Length > 0)
-            {
                 RemoveCharBeforeCursor();
-            }
+
             return ReplResult.Empty;
         }
 
@@ -171,10 +193,26 @@ namespace LealVault.Infra.Repl
             return ReplResult.Empty;
         }
 
+        private ReplResult HitV(ConsoleKeyInfo info)
+        {
+            var hitControl = info.Modifiers.HasFlag(ConsoleModifiers.Control);
+
+            if (!hitControl)
+            {
+                InsertChar(info.KeyChar);
+                return ReplResult.Empty;
+            }
+
+            var clipboardContent = ClipboardService.GetText();
+
+            if (string.IsNullOrEmpty(clipboardContent))
+                return ReplResult.Empty;
+
+            return new ReplResult(clipboardContent);
+        }
         #endregion
 
         #region [ Utilities ]
-
         private void InsertChar(char c)
         {
             // Insert into the StringBuilder at the cursor position
